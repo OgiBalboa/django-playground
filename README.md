@@ -1,0 +1,2 @@
+# django-playground
+Django trainings
