@@ -1,7 +1,8 @@
-
-
-function run(){
-
+function run(name,top_score){
+var p_name = document.getElementById("p_name");
+var t_score = document.getElementById("top_score");
+p_name.innerHTML = name;
+t_score.innerHTML = top_score;
 var posx = 0;
 var posy = 80;
 var height = 40;

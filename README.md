@@ -13,3 +13,14 @@ Django trainings
   *  Clean Design − Django strictly maintains a clean design throughout its own code and makes it easy to follow best web-development practices.
 
 <i> Credits: www.tutorialspoint.com/ </i>
+
+# NOTES
+
+## POSTGRESQL CODES
+### Initialization
+* sudo su - postgres
+* psql
+## DJANGO HINTS
+*  get_object_or_404() 
+* render()
+* django.shortcuts module.
