@@ -23,4 +23,7 @@ Django trainings
 ## DJANGO HINTS
 *  get_object_or_404() 
 * render()
-* django.shortcuts module.
+* django.shortcuts module. django.urls.reverse ?
+* url ref : <a href="{% url 'name' args %}"></a>
+*  Avoiding race conditions using F() (2 user same database)
+* Generic Vivew
