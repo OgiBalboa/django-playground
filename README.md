@@ -16,10 +16,6 @@ Django trainings
 
 # NOTES
 
-## POSTGRESQL CODES
-### Initialization
-* sudo su - postgres
-* psql
 ## DJANGO HINTS
 *  get_object_or_404() 
 * render()
@@ -27,3 +23,4 @@ Django trainings
 * url ref : <a href="{% url 'name' args %}"></a>
 *  Avoiding race conditions using F() (2 user same database)
 * Generic Vivew
+
