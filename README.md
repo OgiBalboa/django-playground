@@ -24,3 +24,8 @@ Django trainings
 *  Avoiding race conditions using F() (2 user same database)
 * Generic Vivew
 
+#TO DO
+
+* admin, add item cant leave input blank.
+* log in page UI.
+* order summary page, item order changes.. ( research for order_by method)
