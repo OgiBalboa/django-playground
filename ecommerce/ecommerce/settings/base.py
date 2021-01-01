@@ -5,7 +5,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(
     os.path.dirname(os.path.abspath(__file__))))
 
 SECRET_KEY = hidden_keys.SECRET_KEY
-DEBUG = True
+#DEBUG = True
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -51,16 +51,6 @@ TEMPLATES = [
         },
     },
 ]
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': "quas",
-        'USER': 'ogi',
-        'PASSWORD': 'gfb.1907',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
 
 WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
