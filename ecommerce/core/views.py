@@ -366,7 +366,6 @@ class OrderSummaryView(LoginRequiredMixin, View):
 
 class ItemDetailView(DetailView):
     model = Item
-    Item.discount_amount = Item.discount_price*100
     template_name = "product.html"
 
 
