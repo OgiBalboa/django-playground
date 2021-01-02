@@ -42,6 +42,17 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class AddressAdmin(admin.ModelAdmin):
+    """
+    (Alan belirleme) ("Alan adı- başlık", {'fields':["alanlar (modelde bulunan Fieldlar)}
+    fieldsets = [('UUser', {'fields':['user']}),
+                 ('ST', {'fields':['street_address']}),
+                 ('APP', {'fields': ['apartment_address']}),
+                 ('CONT', {'fields': ['country']}),
+                 ('zipp', {'fields': ['zip']}),
+                 ('address_type', {'fields': ['address_type']}),
+                 ('default', {'fields': ['default']}),
+                 ]
+    """
     list_display = [
         'user',
         'street_address',
