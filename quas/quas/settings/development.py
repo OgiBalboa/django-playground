@@ -2,7 +2,7 @@ from .base import *
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','ogibalboa.pythonanywhere.com']
+ALLOWED_HOSTS = ['127.0.0.1','quasrobotic.pythonanywhere.com']
 
 INSTALLED_APPS += [
     'debug_toolbar'
