@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Robot, OrderItem, Order, Payment, Coupon, Refund, Address, UserProfile,Brand
+from .models import Robot, OrderItem, Order, Payment, Coupon, Refund, Address, UserProfile,Brand, Controller
 
 
 def make_refund_accepted(modeladmin, request, queryset):
@@ -66,27 +66,58 @@ class AddressAdmin(admin.ModelAdmin):
     search_fields = ['user', 'street_address', 'apartment_address', 'zip']
 
 class RobotAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ('General Info', {
+            'fields': ['brand','title','category','label','description',
+                       'slug','image'],
+                         }
+         ),
+        ('FINANCIAL INFOS', {
+            'fields': ['price','discount_price']
+                            }
+         ),
+        ('RATINGS', {
+            'fields': ['overall_rating','customer_rating']
+        }),
+        ('APPLICATION', {
+            'fields': ['application'],
+            'classes':('collapse',),
+                        }
+        ),
+        ('DATASHEET', {
+            'fields': ['controller','working_range_image', 'number_of_axes', 'payload', 'reach', 'repeatability', 'picking_cycle',
+                       'mounting', 'weight', 'axis1_speed', 'axis1_movement', 'axis2_speed', 'axis2_movement',
+                       'axis3_speed', 'axis3_movement', 'axis4_speed', 'axis4_movement', 'axis5_speed', 'axis5_movement',
+                       'axis6_speed','axis6_movement'
+                       ],
+            'classes': ('collapse',)
+                        }
+        ),
+    ]
     list_display = ['brand',
                     'title',
                     'category',
+                    'overall_rating',
                     ]
     list_display_links = [
         'brand',
         'title',
         'category',
+        'overall_rating',
     ]
     list_filter = ['brand',
                    'title',
                    'category',]
 
     search_fields = [
-        'user__username',
-        'ref_code'
+        'title',
+        'brand',
     ]
     actions = [make_refund_accepted]
 
 admin.site.register(Robot,RobotAdmin)
 admin.site.register(Brand)
+admin.site.register(Controller)
 admin.site.register(OrderItem)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Payment)

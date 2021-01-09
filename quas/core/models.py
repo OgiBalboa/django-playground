@@ -4,26 +4,19 @@ from django.db import models
 from django.db.models import Sum
 from django.shortcuts import reverse
 from django_countries.fields import CountryField
+from . import apendix
+from multiselectfield import MultiSelectField
+CATEGORY_CHOICES = apendix.CATEGORY_CHOICES
 
+LABEL_CHOICES = apendix.LABEL_CHOICES
 
-CATEGORY_CHOICES = (
-    ('IR', 'Endüstriyel Robotlar'),
-    ('RGV', 'RGV Robotlar'),
-    ('CO', 'Cobotlar')
-)
+ADDRESS_CHOICES = apendix.ADDRESS_CHOICES
 
-LABEL_CHOICES = (
-    ('P', 'primary'),
-    ('S', 'secondary'),
-    ('D', 'danger')
-)
+ROBOT_APPLICATIONS = apendix.ROBOT_APPLICATIONS
 
-ADDRESS_CHOICES = (
-    ('B', 'Billing'),
-    ('S', 'Shipping'),
-)
+AXIS_MOVEMENT = apendix.AXIS_MOVEMENT
 
-
+MOUNTING = apendix.MOUNTING
 class UserProfile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -40,20 +33,66 @@ class Brand(models.Model):
     '''
     def __str__(self):
         return self.title
+class Controller(models.Model):
+    brand = models.ForeignKey(Brand,on_delete = models.CASCADE)
+    title = models.CharField(max_length=100)
 
+    #----------------DATASHEET------------------
+
+    def __str__(self):
+        return self.title
 class Robot(models.Model):
     # -------------------GENERAL INFOS---------------------------
     brand = models.ForeignKey(Brand,on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     category = models.CharField(choices=CATEGORY_CHOICES, max_length=4)
+    #application = models.CharField(choices=ROBOT_APPLICATIONS, max_length=4)
+    application = MultiSelectField(choices=ROBOT_APPLICATIONS, max_length=11,blank=True,null=True)
     label = models.CharField(choices=LABEL_CHOICES, max_length=1)
     description = models.TextField()
     slug = models.SlugField()
     image = models.ImageField()
+    slogan = models.CharField(max_length=100,null=True,blank=True)
+    #--------------------RATINGS--------------------------
+    overall_rating = models.IntegerField(default=1)
+    customer_rating = models.IntegerField(default=1)
+    #speed = models.IntegerField(default =1)
+    #power = models.IntegerField(default =1)
+    #accuracy = models.IntegerField(default =1)
+
     # -------------------FINANCIAL INFOS-------------------------
     price = models.FloatField()
     discount_price = models.FloatField(blank=True, null=True)
     # ----------------------DATASHEET----------------------------
+    working_range_image = models.ImageField(upload_to='robots/working_range_images/')
+
+    number_of_axes = models.IntegerField(default=6)
+    payload = models.IntegerField(default = 1)# kg
+    reach = models.FloatField(default =1) # metre
+    repeatability = models.FloatField(default=1)# mm
+    picking_cycle = models.FloatField(default=1)# sec 300x25x25 with 1kg payload
+    mounting = MultiSelectField (choices=MOUNTING,max_length=30)
+    weight = models.IntegerField(default=1) # kg
+
+    axis1_speed = models.IntegerField(default=1)# degree/s
+    axis1_movement = models.CharField(choices=AXIS_MOVEMENT,max_length=50)
+
+    axis2_speed = models.IntegerField(default=1)# degree/s
+    axis2_movement = models.CharField(choices=AXIS_MOVEMENT,max_length=50)
+
+    axis3_speed = models.IntegerField(default=1)# degree/s
+    axis3_movement = models.CharField(choices =AXIS_MOVEMENT,max_length=50)
+
+    axis4_speed = models.IntegerField(default = 1)# degree/s
+    axis4_movement = models.CharField(choices =AXIS_MOVEMENT,max_length=50)
+
+    axis5_speed = models.IntegerField(default=1)# degree/s
+    axis5_movement = models.CharField(choices=AXIS_MOVEMENT,max_length=50)
+
+    axis6_speed = models.IntegerField(default=1)# degree/s
+    axis6_movement = models.CharField(choices=AXIS_MOVEMENT,max_length=50)
+
+    controller = models.ForeignKey(Controller, on_delete=models.CASCADE)
 
 
     def __str__(self):
