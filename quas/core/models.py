@@ -33,16 +33,28 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
-
-class Item(models.Model):
+class Brand(models.Model):
     title = models.CharField(max_length=100)
-    price = models.FloatField()
-    discount_price = models.FloatField(blank=True, null=True)
+    '''
+    Brand infos, name, country, date, point, etc...
+    '''
+    def __str__(self):
+        return self.title
+
+class Robot(models.Model):
+    # -------------------GENERAL INFOS---------------------------
+    brand = models.ForeignKey(Brand,on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
     category = models.CharField(choices=CATEGORY_CHOICES, max_length=4)
     label = models.CharField(choices=LABEL_CHOICES, max_length=1)
-    slug = models.SlugField()
     description = models.TextField()
+    slug = models.SlugField()
     image = models.ImageField()
+    # -------------------FINANCIAL INFOS-------------------------
+    price = models.FloatField()
+    discount_price = models.FloatField(blank=True, null=True)
+    # ----------------------DATASHEET----------------------------
+
 
     def __str__(self):
         return self.title
@@ -67,7 +79,7 @@ class OrderItem(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
     ordered = models.BooleanField(default=False)
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    item = models.ForeignKey(Robot, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
 
     def __str__(self):

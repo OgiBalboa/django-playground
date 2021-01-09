@@ -13,7 +13,7 @@ from django.utils import timezone
 from django.views.generic import ListView, DetailView, View
 
 from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
-from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile
+from .models import Robot, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -24,7 +24,7 @@ def create_ref_code():
 
 def products(request):
     context = {
-        'items': Item.objects.all()
+        'items': Robot.objects.all()
     }
     return render(request, "products.html", context)
 
@@ -346,7 +346,7 @@ class PaymentView(View):
 
 
 class HomeView(ListView):
-    model = Item
+    model = Robot
     paginate_by = 10
     template_name = "home.html"
 
@@ -365,13 +365,13 @@ class OrderSummaryView(LoginRequiredMixin, View):
 
 
 class ItemDetailView(DetailView):
-    model = Item
+    model = Robot
     template_name = "product.html"
 
 
 @login_required
 def add_to_cart(request, slug):
-    item = get_object_or_404(Item, slug=slug)
+    item = get_object_or_404(Robot, slug=slug)
     order_item, created = OrderItem.objects.get_or_create(
         item=item,
         user=request.user,
@@ -401,7 +401,7 @@ def add_to_cart(request, slug):
 
 @login_required
 def remove_from_cart(request, slug):
-    item = get_object_or_404(Item, slug=slug)
+    item = get_object_or_404(Robot, slug=slug)
     order_qs = Order.objects.filter(
         user=request.user,
         ordered=False
@@ -429,7 +429,7 @@ def remove_from_cart(request, slug):
 
 @login_required
 def remove_single_item_from_cart(request, slug):
-    item = get_object_or_404(Item, slug=slug)
+    item = get_object_or_404(Robot, slug=slug)
     order_qs = Order.objects.filter(
         user=request.user,
         ordered=False
