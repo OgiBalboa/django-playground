@@ -54,7 +54,7 @@ class Robot(models.Model):
     image = models.ImageField()
     slogan = models.CharField(max_length=100,null=True,blank=True)
     #--------------------RATINGS--------------------------
-    overall_rating = models.IntegerField(default=1)
+    performance_rating = models.IntegerField(default=1)
     customer_rating = models.IntegerField(default=1)
     #speed = models.IntegerField(default =1)
     #power = models.IntegerField(default =1)
@@ -98,6 +98,10 @@ class Robot(models.Model):
     def __str__(self):
         return self.title
 
+    def get_brand_url(self):
+        return reverse("core:brand", kwargs= {
+            'slug': self.brand
+        })
     def get_absolute_url(self):
         return reverse("core:product", kwargs={
             'slug': self.slug

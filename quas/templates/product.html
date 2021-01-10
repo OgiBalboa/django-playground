@@ -1,8 +1,75 @@
 {% extends "base.html" %}
-
+{% load humanize %}
+{% load cart_template_tags %}
 {% block content %}
+<!-- DEFINE COLORS BY RATINGS -->
+
+
 
   <main class="mt-5 pt-4">
+    <div class="container dark-grey-text mt-5">
+
+      <div class="row wow fadeIn">
+        <!-- Left (Brand + title) -->
+        <div class="col-md-6 mb-4">
+          <a href = "{{ object.get_brand_url }}">
+            <h1 align="center"> {{ object.brand }} </h1>
+          </a>
+          <span> <h1 align="center">{{ object.title }} </h1></span>
+          </div>
+        <!-- Right (Ratings) -->
+        <div class="col-md-6 mb-4">
+          <div class="col-md-6 mb-4" >
+            <script>
+          {% if object.performance_rating > 85 %}
+             {% setvar "#32951d" as p_color %}
+          {% elif object.performance_rating > 70 %}
+            {% setvar "#68dd4f" as p_color %}
+          {% elif object.performance_rating > 50 %}
+            {% setvar "#dbc511" as p_color %}
+          {% else %}
+            {% setvar "darkred" as p_color %}
+          {% endif %}
+          </script>
+            <div>
+              <span class="badge blue mr-1" style = "margin-bottom:0.25em;font-size: 100%;">Performance Rating: </span>
+              <span style="font-size: 150%;align:center;color:{{p_color}};">&nbsp; &nbsp; &nbsp; <b> {{ object.performance_rating }}</b> </span>
+              </div>
+
+
+        <div class="progress md-progress">
+          <script>
+          {% if object.customer_rating > 85 %}
+             {% setvar "#32951d" as c_color %}
+          {% elif object.customer_rating > 70 %}
+            {% setvar "#68dd4f" as c_color %}
+          {% elif object.customer_rating > 50 %}
+            {% setvar "#dbc511" as c_color %}
+          {% else %}
+            {% setvar "darkred" as c_color %}
+          {% endif %}
+        </script>
+            <div class="progress-bar" role="progressbar" style="background-color: {{p_color}}; width: {{ object.performance_rating }}%"
+                 aria-valuenow="{{ object.performance_rating }}" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        </div>
+
+          <div class="col-md-6 mb-4">
+          <span class="badge blue mr-1" style = "font-size: 100%;margin-bottom:0.25em">Customer Rating &nbsp; &nbsp; : </span>
+            <span style="font-size: 150%;align:center;color:{{c_color}};">&nbsp; &nbsp; &nbsp; &nbsp;<b>{{ object.customer_rating }}</b></span>
+        <div class="progress md-progress">
+
+            <div class="progress-bar" role="progressbar" style="background-color: {{c_color}}; width: {{ object.customer_rating }}%"
+                 aria-valuenow="{{ object.performance_rating }}" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        </div>
+        </div>
+        </div>
+      </div>
+
+    </div> <!-- end of title segment -->
+
+    <!-- PRODUCT INFO -->
     <div class="container dark-grey-text mt-5">
 
       <!--Grid row-->
@@ -11,7 +78,7 @@
         <!--Grid column-->
         <div class="col-md-6 mb-4">
 
-          <img src="{{ item.image.url }}" class="img-fluid" alt="">
+          <img src="{{ object.image.url }}" class="img-fluid" alt="">
 
         </div>
         <!--Grid column-->
@@ -31,11 +98,11 @@
             <p class="lead">
               {% if object.discount_price %}
               <span class="mr-1">
-                <del>${{ object.price }}</del>
+                <del>${{ object.price|intcomma }}</del>
               </span>
-              <span>${{ object.discount_price }}</span>
+              <span>${{ object.discount_price|intcomma }}</span>
               {% else %}
-              <span>${{ object.price }}</span>
+              <span>${{ object.price |intcomma }}</span>
               {% endif %}
             </p>
 

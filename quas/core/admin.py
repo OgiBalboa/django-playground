@@ -77,7 +77,7 @@ class RobotAdmin(admin.ModelAdmin):
                             }
          ),
         ('RATINGS', {
-            'fields': ['overall_rating','customer_rating']
+            'fields': ['performance_rating','customer_rating']
         }),
         ('APPLICATION', {
             'fields': ['application'],
@@ -97,13 +97,13 @@ class RobotAdmin(admin.ModelAdmin):
     list_display = ['brand',
                     'title',
                     'category',
-                    'overall_rating',
+                    'performance_rating',
                     ]
     list_display_links = [
         'brand',
         'title',
         'category',
-        'overall_rating',
+        'performance_rating',
     ]
     list_filter = ['brand',
                    'title',
