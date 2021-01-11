@@ -7,7 +7,9 @@ CATEGORY_CHOICES = (
 LABEL_CHOICES = (
     ('P', 'primary'),
     ('S', 'secondary'),
-    ('D', 'danger')
+    ('D', 'danger'),
+    ('A', 'success'),
+    ('W', 'warning'),
 )
 
 ADDRESS_CHOICES = (

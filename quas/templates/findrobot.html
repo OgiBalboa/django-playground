@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load cart_template_tags %}
+{% block content %}
+<main>
+<!-- SEARCH SCREEN -->
+<div class="container">
+<!-- SEARCH SCREEN -->
+<h1 align="center">For This Application</h1>
+    <br>
+<h1 align="center">Best Robot is</h1>
+    <br>
+<h2 align="center">One of them:</h2>
+<!-- SEARCH RESULTS -->
+    <!-- FOR LOOP -->
+    <!-- Card -->
+</div>
+<div class="container">
+<section class="text-center mb-4">
+
+<div class="row wow fadeIn">
+    <div class="col-lg-3 col-md-6 mb-4 animated fadeInLeft">
+        <div class="card">
+            <div class="row">
+            <div class="col-" style="padding-left: 15px;font-size:30;"><span class="badge green mr-1">{{robot.performance_rating}}</span></div>
+            <div class="col">
+            <!-- Card image -->
+            <img class="card-img-top" src="{{robot.image.url}}" alt="Card image cap">
+            </div>
+            </div>
+          <!-- Card content -->
+          <div class="card-body" style="border-top-width: 2px;border-top-style: solid;">
+
+            <!-- Title -->
+                            <h5>
+                  <strong>
+                    <a href="{{ item.get_absolute_url }}" class="dark-grey-text"><span style="color:darkblue;">{{robot.brand}}</span> {{ robot.title }}
+                      <span class="badge badge-pill {{ robot.get_label_display }}-color">Best Match!</span>
+                    </a>
+                  </strong>
+                </h5>
+            <!-- Text -->
+            <p class="card-text">Şimdilik Dursun</p>
+            <!-- Button -->
+            <a href="#" class="btn btn-primary">Button</a>
+
+          </div>
+
+
+    </div>
+</div>
+</section>
+</div>
+<!-- Card -->
+<!-- SEARCH RESULTS -->
+</main>
+
+{% endblock content %}

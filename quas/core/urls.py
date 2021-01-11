@@ -9,7 +9,8 @@ from .views import (
     remove_single_item_from_cart,
     PaymentView,
     AddCouponView,
-    RequestRefundView
+    RequestRefundView,
+    FındRobotView
 )
 
 app_name = 'core'
@@ -27,4 +28,5 @@ urlpatterns = [
     path('payment/<payment_option>/', PaymentView.as_view(), name='payment'),
     path('request-refund/', RequestRefundView.as_view(), name='request-refund'),
     path('brand/<slug>', HomeView.as_view(), name='brand'),
+    path('findrobot/', FındRobotView.as_view(), name='findrobot'),
 ]

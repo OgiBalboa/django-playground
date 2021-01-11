@@ -13,7 +13,7 @@ from django.utils import timezone
 from django.views.generic import ListView, DetailView, View
 
 from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
-from .models import Robot, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile
+from .models import Robot, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile, Brand, Controller
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -368,6 +368,16 @@ class ItemDetailView(DetailView):
     model = Robot
     template_name = "product.html"
 
+class FındRobotView(View):
+
+    def get(self, *args,**kwargs):
+        robot = Robot.objects.get(brand = Brand.objects.get(title = "ABB"))
+        context = {
+            "robot":robot,
+        }
+        return render(self.request, "findrobot.html", context)
+    def post(self, *args,**kwargs):
+        pass
 
 @login_required
 def add_to_cart(request, slug):
