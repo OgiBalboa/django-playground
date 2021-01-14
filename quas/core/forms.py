@@ -1,7 +1,7 @@
 from django import forms
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
-
+from . import apendix
 
 PAYMENT_CHOICES = (
     ('S', 'Stripe'),
@@ -59,3 +59,8 @@ class PaymentForm(forms.Form):
     stripeToken = forms.CharField(required=False)
     save = forms.BooleanField(required=False)
     use_default = forms.BooleanField(required=False)
+
+class ApplicationForm(forms.Form):
+    application = forms.ChoiceField(choices = apendix.ROBOT_APPLICATIONS)
+    payload = forms.IntegerField(required=False)
+    reach = forms.IntegerField(required=False)

@@ -7,7 +7,22 @@
 <div class="container">
 <!-- SEARCH SCREEN -->
 <h1 align="center">For This Application</h1>
-    <br>
+    <form method="POST" class="card-body">
+        {% csrf_token %}
+        <div class="container">
+            <div class="row justify-content-center">
+            <div class="col ">Choose Application Type:</div><div class="col">{{form.application}}</div>
+            <div class="w-100"></div>
+            <div class="col">Specify Payload (kg):</div><div class="col">{{form.payload}}</div>
+            <div class="w-100"></div>
+            <div class="col">Specify Reach (meters):</div><div class="col">{{form.reach}}</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col"><input type="submit"></div>
+            </div>
+        </div>
+    </form>
+
 <h1 align="center">Best Robot is</h1>
     <br>
 <h2 align="center">One of them:</h2>
