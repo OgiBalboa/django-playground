@@ -1,7 +1,7 @@
 CATEGORY_CHOICES = (
-    ('IR', 'Endüstriyel Robotlar'),
-    ('RGV', 'RGV Robotlar'),
-    ('CO', 'Cobotlar')
+    ('IR', 'Industrial Robots'),
+    ('RGV', 'RGV Robots'),
+    ('CO', 'Cobots')
 )
 
 LABEL_CHOICES = (
