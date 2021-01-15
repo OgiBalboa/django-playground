@@ -6,26 +6,56 @@
 <!-- SEARCH SCREEN -->
 <div class="container">
 <!-- SEARCH SCREEN -->
-<h1 align="center">For This Application</h1>
-    <form method="POST" class="card-body">
-        {% csrf_token %}
-        <div class="container">
-            <div class="row justify-content-center">
-            <div class="col ">Choose Application Type:</div><div class="col">{{form.application}}</div>
-            <div class="w-100"></div>
-            <div class="col">Specify Payload (kg):</div><div class="col">{{form.payload}}</div>
-            <div class="w-100"></div>
-            <div class="col">Specify Reach (meters):</div><div class="col">{{form.reach}}</div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col"><input type="submit"></div>
-            </div>
-        </div>
-    </form>
+<div class="card mt-4 mb-4">
 
+    <h5 class="card-header info-color white-text text-center py-4" >
+        <strong>For This Application</strong>
+    </h5>
+
+    <!--Card content-->
+    <div class="card-body px-lg-5 mt-4">
+
+        <!-- Form -->
+        <form class="text-center" style="color: #757575;" action="#!">
+            {% csrf_token %}
+            <select class="browser-default custom-select mb-3">
+              <option selected>Choose Application Type</option>
+                {% for choice,display in form.fields.application.choices %}
+                 <option value="{{choice}}">{{display}}</option>
+                {% endfor %}
+            </select>
+            <!-- Name -->
+            <div class="input-group mb-3" >
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Specify Payload</span>
+                  </div>
+                <input type="text" id="materialSubscriptionFormPasswords" class="form-control">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">kg</span>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Specify Reach</span>
+                  </div>
+                <input type="text" id="materialSubscriptionFormPasswords" class="form-control">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">m</span>
+                </div>
+            </div>
+
+            <!-- Sign in button -->
+            <button class="btn btn-info btn-block my-4waves-effect" type="submit">Find BestRobot!</button>
+
+        </form>
+        <!-- Form -->
+
+    </div>
+
+</div>
 <h1 align="center">Best Robot is</h1>
     <br>
-<h2 align="center">One of them:</h2>
+<h2 align="center">One of these:</h2>
 <!-- SEARCH RESULTS -->
     <!-- FOR LOOP -->
     <!-- Card -->
@@ -34,6 +64,7 @@
 <section class="text-center mb-4">
 
 <div class="row wow fadeIn">
+    {% for robot in robots %}
     <div class="col-lg-3 col-md-6 mb-4 animated fadeInLeft">
         <div class="card">
             <div class="row">
@@ -60,9 +91,8 @@
             <a href="#" class="btn btn-primary">Button</a>
 
           </div>
-
-
     </div>
+    {% endfor %}
 </div>
 </section>
 </div>

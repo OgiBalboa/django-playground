@@ -374,7 +374,7 @@ class FindRobotView(View):
         robot = Robot.objects.get(brand = Brand.objects.get(title = "ABB"))
         form = ApplicationForm()
         context = {
-            "robot":robot,
+            "robots":[robot],
             "form":form,
         }
         return render(self.request, "findrobot.html", context)
