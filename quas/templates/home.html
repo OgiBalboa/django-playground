@@ -75,7 +75,7 @@
                 <h5>
                   <strong>
                     <a href="{{ item.get_absolute_url }}" class="dark-grey-text">{{ item.title }}
-                      <span class="badge badge-pill {{ item.get_label_display }}-color">YENİ</span>
+                      <span class="badge badge-pill {{ item.get_label_display }}-color">NEW</span>
                     </a>
                   </strong>
                 </h5>
@@ -111,7 +111,7 @@
           <li class="page-item">
             <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
-              <span class="sr-only">Önceki</span>
+              <span class="sr-only">Previous</span>
             </a>
           </li>
           {% endif %}
@@ -126,7 +126,7 @@
           <li class="page-item">
             <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
               <span aria-hidden="true">&raquo;</span>
-              <span class="sr-only">Sonraki</span>
+              <span class="sr-only">Next</span>
             </a>
           </li>
           {% endif %}
