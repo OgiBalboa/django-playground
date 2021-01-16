@@ -2,6 +2,13 @@
 
 <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar"
 style="margin-bottom:150px">
+  <script type="text/javascript">
+    function navbar_active(button_name) {
+      document.getElementById("home_button").classList.remove('active');
+      document.getElementById("findrobot_button").classList.remove('active');
+      document.getElementById(button_name).classList.add('active');
+    }
+  </script>
     <div class="container">
 
       <!-- Brand -->
@@ -23,14 +30,14 @@ style="margin-bottom:150px">
 
         <!-- Left -->
         <ul class="navbar-nav mr-auto">
-         <li class="nav-item active">
-            <a class="nav-link waves-effect" href="/">Home
+         <li id="home_button" class="nav-item active">
+            <a  class="nav-link waves-effect" href="/">Home
               <span class="sr-only">(current)</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="/checkout">
-            Checkout</a>
+          <li id="findrobot_button" class="nav-item">
+            <a  class="nav-link waves-effect" href="/findrobot">
+            Find BestRobot</a>
           </li>
         </ul>
 

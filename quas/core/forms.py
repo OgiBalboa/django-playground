@@ -61,6 +61,6 @@ class PaymentForm(forms.Form):
     use_default = forms.BooleanField(required=False)
 
 class ApplicationForm(forms.Form):
-    application = forms.ChoiceField(choices = apendix.ROBOT_APPLICATIONS)
-    payload = forms.IntegerField(required=False)
-    reach = forms.IntegerField(required=False)
+    application = forms.ChoiceField(choices = apendix.ROBOT_APPLICATIONS,required=False)
+    payload = forms.FloatField(required=False)
+    reach = forms.FloatField(required=False)

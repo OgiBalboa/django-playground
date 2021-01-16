@@ -83,3 +83,11 @@ MOUNTING = (
     ('T', 'Tilted'),
     ('I', 'Invert Mount'),
 )
+
+with open("js_dict.txt","w") as file:
+    out = "let ROBOT_APPLICATIONS = ["
+    for item in ROBOT_APPLICATIONS:
+        out+= item[1] +", "
+    out+="]"
+    print(out)
+    file.write(out)

@@ -2,7 +2,11 @@
 {% load humanize %}
 {% load cart_template_tags %}
 {% block content %}
+{% load static %}
 <main>
+    <script type="text/javascript">
+        navbar_active("findrobot_button");
+    </script>
 <!-- SEARCH SCREEN -->
 <div class="container">
 <!-- SEARCH SCREEN -->
@@ -11,64 +15,42 @@
     <h5 class="card-header info-color white-text text-center py-4" >
         <strong>For This Application</strong>
     </h5>
+<script src="{% static 'js/modules/dynamic-forms.js' %}" type="text/javascript"></script>
 
     <!--Card content-->
     <div class="card-body px-lg-5 mt-4">
 
-        <!-- Form -->
-        <form class="text-center" style="color: #757575;" action="#!">
+        <form class="text-center" style="color: #757575;" method="POST">
             {% csrf_token %}
-            <select class="browser-default custom-select mb-3">
-              <option selected>Choose Application Type</option>
-                {% for choice,display in form.fields.application.choices %}
-                 <option value="{{choice}}">{{display}}</option>
-                {% endfor %}
-            </select>
-            <!-- Name -->
-            <div class="input-group mb-3" >
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">Specify Payload</span>
-                  </div>
-                <input type="text" id="materialSubscriptionFormPasswords" class="form-control">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">kg</span>
-                </div>
-            </div>
-            <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">Specify Reach</span>
-                  </div>
-                <input type="text" id="materialSubscriptionFormPasswords" class="form-control">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">m</span>
-                </div>
-            </div>
-
+            <div id="findrobot_form"></div>
             <!-- Sign in button -->
-            <button class="btn btn-info btn-block my-4waves-effect" type="submit">Find BestRobot!</button>
-
+            <button class="btn btn-info btn-block my-4waves-effect deactive" type="submit">Find BestRobot!</button>
         </form>
+        <script>
+            field_selector();
+        </script>
         <!-- Form -->
-
     </div>
 
 </div>
-<h1 align="center">Best Robot is</h1>
-    <br>
-<h2 align="center">One of these:</h2>
+{% if query == True %}
+<h1 align="center">Best Robot is One of these:</h1>
 <!-- SEARCH RESULTS -->
     <!-- FOR LOOP -->
     <!-- Card -->
 </div>
 <div class="container">
-<section class="text-center mb-4">
+<section class="text-center mt-4 mb-4">
 
 <div class="row wow fadeIn">
+    {% if robots|length < 1 %}
+    <div class="col" align="center"><h5 align="center">Ne yazık ki uygun bir robot bulunamadı...</h5></div>
+    {% endif %}
     {% for robot in robots %}
     <div class="col-lg-3 col-md-6 mb-4 animated fadeInLeft">
         <div class="card">
             <div class="row">
-            <div class="col-" style="padding-left: 15px;font-size:30;"><span class="badge green mr-1">{{robot.performance_rating}}</span></div>
+                <div class="col-lg-1 mr-2"><span class="badge green"><h4>{{robot.performance_rating}}</h4></span></div>
             <div class="col">
             <!-- Card image -->
             <img class="card-img-top" src="{{robot.image.url}}" alt="Card image cap">
@@ -88,14 +70,16 @@
             <!-- Text -->
             <p class="card-text">Şimdilik Dursun</p>
             <!-- Button -->
-            <a href="#" class="btn btn-primary">Button</a>
+            <a href="#" class="btn btn-primary">Details</a>
 
           </div>
     </div>
-    {% endfor %}
+
 </div>
+       {% endfor %}
 </section>
 </div>
+{% endif %}
 <!-- Card -->
 <!-- SEARCH RESULTS -->
 </main>

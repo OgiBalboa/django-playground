@@ -370,16 +370,33 @@ class ItemDetailView(DetailView):
 
 class FindRobotView(View):
 
-    def get(self, *args,**kwargs):
-        robot = Robot.objects.get(brand = Brand.objects.get(title = "ABB"))
-        form = ApplicationForm()
+    def get(self,robot = None, post=None,query = False, *args,**kwargs):
+
+        if not query: form = ApplicationForm()
+        else:
+            print(post)
+            form = ApplicationForm(post)
+        print("ROBOT : ",robot)
         context = {
-            "robots":[robot],
+            "robots":robot,
             "form":form,
+            "query": query,
         }
         return render(self.request, "findrobot.html", context)
     def post(self, *args,**kwargs):
-        pass
+
+        form = ApplicationForm(self.request.POST)
+        if form.is_valid():
+            try:
+                print("Form utputs: ",form.cleaned_data.get("application"))
+                robot = Robot.objects.get(reach=form.cleaned_data.get('reach'))
+                if type(robot) is not list(): robot = [robot]
+            except Robot.DoesNotExist:
+                robot = None
+        else:
+            robot = None
+            print("EERROOOR",form.errors)
+        return self.get(robot,post = self.request.POST,query = True)
 
 @login_required
 def add_to_cart(request, slug):
