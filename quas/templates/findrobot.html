@@ -10,9 +10,9 @@
 <!-- SEARCH SCREEN -->
 <div class="container">
 <!-- SEARCH SCREEN -->
-<div class="card mt-4 mb-4">
+<div class="card mt-4 mb-4 ">
 
-    <h5 class="card-header info-color white-text text-center py-4" >
+    <h5 class="card-header info-color white-text text-center py-4 unique-color" >
         <strong>For This Application</strong>
     </h5>
 <script src="{% static 'js/modules/dynamic-forms.js' %}" type="text/javascript"></script>
@@ -24,7 +24,7 @@
             {% csrf_token %}
             <div id="findrobot_form"></div>
             <!-- Sign in button -->
-            <button class="btn btn-info btn-block my-4waves-effect deactive" type="submit">Find BestRobot!</button>
+            <button class="btn btn-info btn-block unique-color my-4waves-effect active" type="submit">Find BestRobot!</button>
         </form>
         <script>
             field_selector();

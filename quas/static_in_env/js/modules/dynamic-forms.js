@@ -1,16 +1,17 @@
 
 // ARRAYS:
+var ROBOT_APPLICATIONS = ["Arc Welding", "Cleaning", "Coating", "Collaboration", "Cutting", "Deburring", "Depalletizing", "Die Casting", "Dispensing", "Enamelling", "Full Layer Palletizing", "Glazing", "Gluing", "Grinding", "Heavy Arc Welding", "Injection Moulding", "Item Picking", "Loading", "Loading and Unloading"," Machine Tending", "Machine Handling", "Measuring", "Packing", "Painting", "Palletizing", "Part Inspection", "Picking", "Polishing", "Powdering", "Powertrain Assembly", "Pre-Machining", "Press Automation", "Press Brake Tending", "Press Tending", "Rubber Insertion", "Screw Driving", "Sealing", "Small Parts Assembly", "Spot Welding", "Spraying", "Testing", "Unloading", ]
 var FIND_ROBOT_PARAMETER = {
     "reach":["float",["reach","Specify Reach","m"]],
     "payload":["float",["payload","Specify Payload","kg"]],
-    "application":["multi-selection",["application","Choose Application Type"]],
+    "application":["multi-select",["application","Choose Application Type",ROBOT_APPLICATIONS]],
     "performance_rating":["int",["performance_rating","Specify Performance Rating Range"]],
     "customer_rating":["int",["customer_rating","Specify Customer Rating Range"]],
-    "axis_number":["multi-selection",["axis_number","Specify Axis Number"]],
+    "axis_number":["multi-select",["axis_number","Specify Axis Number"]],
     "brand":["text",["brand","Specify Brand Name"]],
     "repeatability":["float",["repeatability","Specify Repeatability","mm"]],
     "picking_cycle":["float",["picking_cycle","Specify Picking Cycle","s"]],
-    "mounting":["multi-selection",["mounting","Specify Mounting Type"]],
+    "mounting":["multi-select",["mounting","Specify Mounting Type"]],
     "weight":["int",["weight","Specify Weight","kg"]],
     "speed":["float",["speed","Specify Speed","m/s"]],
 }
@@ -38,6 +39,7 @@ class FloatField {
 
     `
     }
+    //TODO: id ler iki kez tanımlanıyor. hem input ta hem de div de.
     this.html.innerHTML += `
         <div class="input-group-prepend">
         <button type="button" style='color: red;' onclick="remove_field('${this.html.id}')">
@@ -59,20 +61,27 @@ class TextField {
     }
     }
 class MultiSelectField {
-    constructor(id,text,unit) {
-    this.html = `
-
-    `
+    constructor(id,text,choices) {
+    this.html = document.createElement("select");
+    this.html.id = id;
+    //this.html.setAttribute("multiple","");
+    this.html.className = "mdb-select md-form";
+    for (var i = 0; i <choices.length;i++){
+    var option = document.createElement("option");
+    option.textContent = choices[i][1];
+    option.value = choices[i][0];
+    this.html.appendChild(option);
+    }
     }
     }
 class SingleSelectField {
-    constructor(id,choices){
+    constructor(id, text, choices){
     this.html = document.createElement("select");
     this.html.id = id;
     this.html.className ="browser-default custom-select mb-3";
     this.html.addEventListener("change", add_field);
     var default_option = document.createElement("option");
-    default_option.textContent ="Choose a search parameter";
+    default_option.textContent =text;
     default_option.value = "default";
     this.html.appendChild(default_option);
     for (var i = 0; i <choices.length;i++){
@@ -91,7 +100,7 @@ function field_selector() {
     for (var i = 0; i < values.length; i++) {
         choices.push(values[i][1]);
     }
-    field_select = new SingleSelectField("select_field",choices).html
+    field_select = new SingleSelectField("select_field","Choose a search parameter",choices).html
     document.getElementById("findrobot_form").appendChild(field_select)
 }
 function add_field(event) {
@@ -111,8 +120,12 @@ function add_field(event) {
     case "text":
         field = new TextField(...params[1]);
         break;
+    case "single-select":
+        field = new SingleSelectField(...params[1]);
+        break;
     case "multi-select":
         field = new MultiSelectField(...params[1]);
+        break;
     }
     document.getElementById("findrobot_form").appendChild(field.html);
 }
