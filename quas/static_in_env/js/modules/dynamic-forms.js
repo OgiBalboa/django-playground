@@ -8,7 +8,7 @@ var FIND_ROBOT_PARAMETER = {
     "performance_rating":["int",["performance_rating","Specify Performance Rating Range"]],
     "customer_rating":["int",["customer_rating","Specify Customer Rating Range"]],
     "axis_number":["multi-select",["axis_number","Specify Axis Number"]],
-    "brand":["text",["brand","Specify Brand Name"]],
+    "brand":["text",["brand","Specify Brand Name",false]],
     "repeatability":["float",["repeatability","Specify Repeatability","mm"]],
     "picking_cycle":["float",["picking_cycle","Specify Picking Cycle","s"]],
     "mounting":["multi-select",["mounting","Specify Mounting Type"]],
@@ -19,11 +19,11 @@ var FIND_ROBOT_PARAMETER = {
 //----------------------TEMPLATES--------------------
 class FloatField {
     constructor(id,text,unit) {
-    this.html = document.createElement("div");
-    this.html.id = id
-    this.html.className = "input-group mb-3";
+    this.div = document.createElement("div");
+    this.div.id = id
+    this.div.className = "input-group mb-3";
     if (unit != false){
-    this.html.innerHTML = `
+    this.div.innerHTML = `
         <div class="input-group-prepend">
             <span class="input-group-text">${text}</span>
         </div>
@@ -35,73 +35,71 @@ class FloatField {
     `
     }
     else {
-    this.html.innerHTML =`
-
-    `
+    this.div.innerHTML = `
+        <div class="input-group-prepend">
+            <span class="input-group-text">${text}</span>
+        </div>
+        <input type="text" id=${id} name=${id} class="form-control">
+         `
     }
     //TODO: id ler iki kez tanımlanıyor. hem input ta hem de div de.
-    this.html.innerHTML += `
+    this.div.innerHTML += `
         <div class="input-group-prepend">
-        <button type="button" style='color: red;' onclick="remove_field('${this.html.id}')">
+        <button type="button" style='color: red;' onclick="remove_field('${this.div.id}')">
             <i class="fas fa-trash float-center"></i>
         </button>
         </div>
     `
     }
 }
-class IntField {
-    constructor(id,text,unit) {
-    this.html = "ana"
-    }
-    }
-
-class TextField {
-    constructor(id,text,unit) {
-
-    }
-    }
 class MultiSelectField {
     constructor(id,text,choices) {
-    this.html = document.createElement("select");
-    this.html.id = id;
-    //this.html.setAttribute("multiple","");
-    this.html.className = "mdb-select md-form";
+    this.div = document.createElement("div");
+    this.select = document.createElement("select");
+    this.select.id = id;
+    this.select.setAttribute("multiple","");
+    this.select.className = "mdb-select md-form";
     for (var i = 0; i <choices.length;i++){
-    var option = document.createElement("option");
-    option.textContent = choices[i][1];
-    option.value = choices[i][0];
-    this.html.appendChild(option);
+        var option = document.createElement("option");
+        option.textContent = choices[i];
+        option.value = choices[i];
+        this.select.appendChild(option);
     }
+    this.div.appendChild(this.select);
     }
     }
 class SingleSelectField {
-    constructor(id, text, choices){
-    this.html = document.createElement("select");
-    this.html.id = id;
-    this.html.className ="browser-default custom-select mb-3";
-    this.html.addEventListener("change", add_field);
+    constructor(id, text, choices, values = choices){
+    this.div = document.createElement("div");
+    this.select = document.createElement("select");
+    this.select.id = id;
+    this.select.className ="browser-default custom-select mb-3";
+    this.select.addEventListener("change", add_field);
     var default_option = document.createElement("option");
     default_option.textContent =text;
     default_option.value = "default";
-    this.html.appendChild(default_option);
+    this.select.appendChild(default_option);
     for (var i = 0; i <choices.length;i++){
         var option = document.createElement("option");
-        option.textContent = choices[i][1];
-        option.value = choices[i][0];
-        this.html.appendChild(option);
+        option.textContent = choices[i];
+        option.value = values[i];
+        this.select.appendChild(option);
     }
+    this.div.appendChild(this.select);
     }
 }
 //------------------FUNCTIONS----------------
 var field_select = "";
 function field_selector() {
-    values = Object.values(FIND_ROBOT_PARAMETER);
+    parameters = Object.values(FIND_ROBOT_PARAMETER);
     var choices = [];
-    for (var i = 0; i < values.length; i++) {
-        choices.push(values[i][1]);
+    var values = [];
+    for (var i = 0; i < parameters.length; i++) {
+        choices.push(parameters[i][1][1]);
+        values.push(parameters[i][1][0]);
     }
-    field_select = new SingleSelectField("select_field","Choose a search parameter",choices).html
-    document.getElementById("findrobot_form").appendChild(field_select)
+    field_select = new SingleSelectField("select_field","Choose a search parameter",choices,values).div;
+    document.getElementById("findrobot_form").appendChild(field_select);
 }
 function add_field(event) {
 //TODO:add error handling here
@@ -118,7 +116,7 @@ function add_field(event) {
         field = new FloatField(...params[1]);
         break;
     case "text":
-        field = new TextField(...params[1]);
+        field = new FloatField(...params[1]);
         break;
     case "single-select":
         field = new SingleSelectField(...params[1]);
@@ -127,7 +125,7 @@ function add_field(event) {
         field = new MultiSelectField(...params[1]);
         break;
     }
-    document.getElementById("findrobot_form").appendChild(field.html);
+    document.getElementById("findrobot_form").appendChild(field.div);
 }
 function remove_field(x){
 document.getElementById("findrobot_form").removeChild(document.getElementById(x));

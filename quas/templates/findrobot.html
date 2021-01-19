@@ -24,15 +24,13 @@
             {% csrf_token %}
             <div id="findrobot_form"></div>
             <!-- Sign in button -->
-            <button class="btn btn-info btn-block unique-color my-4waves-effect active" type="submit">Find BestRobot!</button>
+            <button class="btn btn-info btn-block unique-color my-4waves-effect active mb-4" type="submit">Find BestRobot!</button>
         </form>
         <script>
             field_selector();
         </script>
         <!-- Form -->
-    </div>
 
-</div>
 {% if query == True %}
 <h1 align="center">Best Robot is One of these:</h1>
 <!-- SEARCH RESULTS -->
@@ -44,7 +42,7 @@
 
 <div class="row wow fadeIn">
     {% if robots|length < 1 %}
-    <div class="col" align="center"><h5 align="center">Ne yazık ki uygun bir robot bulunamadı...</h5></div>
+    <div class="col" align="center"><h5 align="center">Unfortunately, couldn't find a matching robot...</h5></div>
     {% endif %}
     {% for robot in robots %}
     <div class="col-lg-3 col-md-6 mb-4 animated fadeInLeft">
