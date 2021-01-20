@@ -1,4 +1,3 @@
-
 // ARRAYS:
 var ROBOT_APPLICATIONS = ["Arc Welding", "Cleaning", "Coating", "Collaboration", "Cutting", "Deburring", "Depalletizing", "Die Casting", "Dispensing", "Enamelling", "Full Layer Palletizing", "Glazing", "Gluing", "Grinding", "Heavy Arc Welding", "Injection Moulding", "Item Picking", "Loading", "Loading and Unloading"," Machine Tending", "Machine Handling", "Measuring", "Packing", "Painting", "Palletizing", "Part Inspection", "Picking", "Polishing", "Powdering", "Powertrain Assembly", "Pre-Machining", "Press Automation", "Press Brake Tending", "Press Tending", "Rubber Insertion", "Screw Driving", "Sealing", "Small Parts Assembly", "Spot Welding", "Spraying", "Testing", "Unloading", ]
 var FIND_ROBOT_PARAMETER = {
@@ -15,12 +14,14 @@ var FIND_ROBOT_PARAMETER = {
     "weight":["int",["weight","Specify Weight","kg"]],
     "speed":["float",["speed","Specify Speed","m/s"]],
 }
+//TODO: parametreleri şu formatta düzenle: [id, [["text1,unit1], [text2,unit2]] ] böylece sınırsız text field açarsın.
 
-//----------------------TEMPLATES--------------------
+//----------------------FIELDS--------------------
+var FIELDS = [];
 class FloatField {
     constructor(id,text,unit) {
     this.div = document.createElement("div");
-    this.div.id = id
+    this.div.id = id +"_div"; //TODO:(LATER)WHAT IF THERE ARE MORE THAN ONE OF SAME FIELDS?
     this.div.className = "input-group mb-3";
     if (unit != false){
     this.div.innerHTML = `
@@ -89,7 +90,7 @@ class SingleSelectField {
     }
 }
 //------------------FUNCTIONS----------------
-var field_select = "";
+var FIELD_SELECT = "";
 function field_selector() {
     parameters = Object.values(FIND_ROBOT_PARAMETER);
     var choices = [];
@@ -98,16 +99,18 @@ function field_selector() {
         choices.push(parameters[i][1][1]);
         values.push(parameters[i][1][0]);
     }
-    field_select = new SingleSelectField("select_field","Choose a search parameter",choices,values).div;
-    document.getElementById("findrobot_form").appendChild(field_select);
+    FIELD_SELECT = new SingleSelectField("select_field","Choose a search parameter",choices,values);
+    document.getElementById("findrobot_form").appendChild(FIELD_SELECT.div);
 }
 function add_field(event) {
-//TODO:add error handling here
+//TODO:add error handling here also parameters can be a class
 
     var selectElement = event.target;
     var value = selectElement.value;
     var params = FIND_ROBOT_PARAMETER[value];
-    field_select.selectedIndex = 0;
+    FIELD_SELECT.select.selectedIndex = 0; // RESET SELECTOR
+    if (FIELDS.includes(params[1][0])) return; // DONT DUPLICATE FIELDS
+    FIELDS.push(params[1][0]);
     switch (params[0]) {
     case "int":
         field = new FloatField(...params[1]);
@@ -126,9 +129,12 @@ function add_field(event) {
         break;
     }
     document.getElementById("findrobot_form").appendChild(field.div);
+
 }
 function remove_field(x){
+console.log(x);
 document.getElementById("findrobot_form").removeChild(document.getElementById(x));
+FIELDS = FIELDS.filter(function(id){return id != x}); // REMOVE FIELD FROM LIST REGISTER
 }
 const a = "vaay";
 function create__form() {
@@ -165,4 +171,8 @@ document.getElementById("findorobot_form").innerHTML =`
         </form>
         <!-- Form -->
 `
+}
+
+function pull_form() {
+    console.log(document.getElementById("reach").value);
 }
