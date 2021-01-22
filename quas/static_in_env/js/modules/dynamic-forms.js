@@ -13,8 +13,8 @@ var FIND_ROBOT_PARAMETER = {
     "reach":["float",["reach","Specify Reach","m"]],
     "payload":["float",["payload","Specify Payload","kg"]],
     "application":["multi-select",["application","Choose Application Type",ROBOT_APPLICATIONS]],
-    "performance_rating":["int",["performance_rating","Specify Performance Rating Range"]],
-    "customer_rating":["int",["customer_rating","Specify Customer Rating Range"]],
+    "performance_rating":["text",["performance_rating","Specify Performance Rating Range",false]],
+    "customer_rating":["text",["customer_rating","Specify Customer Rating Range",false]],
     "axis_number":["multi-select",["axis_number","Specify Axis Number",AXIS_NUMBER]],
     "brand":["text",["brand","Specify Brand Name",false]],
     "repeatability":["float",["repeatability","Specify Repeatability","mm"]],
@@ -27,10 +27,12 @@ var FIND_ROBOT_PARAMETER = {
 //----------------------FIELDS--------------------
 var FIELDS = {};
 class StringField {
-    constructor(id,text,unit) {
+    constructor(id,text,unit,hint="single") {
     this.div = document.createElement("div");
     this.id = id //TODO:(LATER)WHAT IF THERE ARE MORE THAN ONE OF SAME FIELDS?
     var id = id; //TODO:(learn) this değişkenleri alt fonksiyonlarda kullanılamıyor. bu sebeple var ile değişken atadık. Alternatif çözümü var mı?
+    this.div.id = id;
+    this.hint = hint;
     this.div.className = "input-group mb-3";
     //---------------------------------------
     var inner_div = document.createElement("div");
@@ -70,7 +72,7 @@ class StringField {
     }
 }
 class MultiSelectField {
-    constructor(id,text,choices,values = choices) {
+    constructor(id,text,choices,values = choices,hint = "multi") {
     this.selected = [];
     this.on_selected = this.on_selected.bind(this);
     //-------------MAIN DIV-------------
@@ -78,6 +80,7 @@ class MultiSelectField {
     this.div.className = "col"
     this.id = id;
     var id = id;
+    this.hint = hint;
     //-------------SELECT -------------
     this.select = document.createElement("select");
     this.select.id = id;
@@ -134,14 +137,14 @@ class MultiSelectField {
             }
         }
     }
-
     }
 class SingleSelectField {
-    constructor(id, text, choices, values = choices){
+    constructor(id, text, choices, values = choices, hint = "single"){
     this.div = document.createElement("div");
     this.select = document.createElement("select");
     this.id = id;
     this.id = id;
+    this.hint = hint;
     this.select.className ="browser-default custom-select mb-3";
     this.select.addEventListener("change", add_field);
     var default_option = document.createElement("option");
@@ -166,7 +169,7 @@ var FORM = document.getElementById("findrobot_form");
 var SUBMIT = document.createElement("button");
 SUBMIT.className = "btn btn-info btn-block unique-color my-4waves-effect active mb-4";
 SUBMIT.textContent = "Find BestRobot!";
-SUBMIT.addEventListener("click",pull_form);
+SUBMIT.addEventListener("click",FindBestRobot);
 SUBMIT.type = "button";
 function field_selector() {
     parameters = Object.values(FIND_ROBOT_PARAMETER);
@@ -211,9 +214,29 @@ function add_field(event) {
 }
 function remove_field(x){
 pull_form();
+console.log(x);
 FORM_div.removeChild(document.getElementById(x));
 delete FIELDS[x];
 }
 function pull_form() {
-console.log(FIELDS["application"].get_value());
+let data = {};
+for (let key in FIELDS) {
+    data[key] = [FIELDS[key].hint,FIELDS[key].get_value()];
 }
+return data;
+}
+//
+function FindBestRobot () {
+    $.ajax({
+      url: '/findrobot',
+      type: 'GET',
+      data: {'parameters': JSON.stringify(pull_form()),
+              'query': true,},
+
+      success: function( data )
+            {
+                //$( '#message' ).text(data);
+                console.log( data)
+            }
+            })
+    }

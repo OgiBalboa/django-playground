@@ -1,7 +1,8 @@
 import random
 import string
-
+import json
 import stripe
+from django.http import JsonResponse
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -371,20 +372,23 @@ class ItemDetailView(DetailView):
 class FindRobotView(View):
 
     def get(self,robot = None, post=None,query = False, *args,**kwargs):
-
-        if not query: form = ApplicationForm()
+        if not self.request.GET.get('query') == "true":
+            form = ApplicationForm()
+            context = {
+                "robots": robot,
+                "form": form,
+                "query": query,
+            }
+            return render(self.request, "findrobot.html", context)
         else:
-            print(post)
-            form = ApplicationForm(post)
-        print("ROBOT : ",robot)
-        context = {
-            "robots":robot,
-            "form":form,
-            "query": query,
-        }
-        return render(self.request, "findrobot.html", context)
+            print(json.loads(self.request.GET.get("parameters")))
+            x = {
+                "name": "John",
+                "age": 30,
+                "city": "New York"
+            }
+            return JsonResponse(json.dumps(x),status=200,safe=False)
     def post(self, *args,**kwargs):
-
         form = ApplicationForm(self.request.POST)
         if form.is_valid():
             try:

@@ -24,22 +24,8 @@
             <div id="findrobot_form_div"></div>
             <!-- Sign in button -->
         </form>
+        <script src="{% static 'js/jquery-3.4.1.min.js' %}" type="text/javascript"></script>
         <script src="{% static 'js/modules/dynamic-forms.js' %}" type="text/javascript"></script>
-        <script>
-        function FindBestRobot (parameters) {
-            $.ajax({
-              url: 'findrobot/',
-              type: 'GET',
-              data: {'parameters': parameters },
-              processData: false,
-              contentType: false,
-              success: function( data )
-                    {
-                        $( '#message' ).text(data);
-                    }
-                    })
-            }
-        </script>
         <script>
             field_selector();
         </script>
