@@ -1674,7 +1674,6 @@ var Chart = require(30)();
 
 Chart.helpers = require(46);
 
-// @todo dispatch these helpers into appropriated helpers/helpers.* file and write unit tests!
 require(28)(Chart);
 
 Chart.Animation = require(22);
@@ -1740,7 +1739,6 @@ if (typeof window !== 'undefined') {
  * Provided for backward compatibility, not available anymore
  * @namespace Chart.Legend
  * @deprecated since version 2.1.5
- * @todo remove at version 3
  * @private
  */
 Chart.Legend = plugins.legend._element;
@@ -1749,7 +1747,6 @@ Chart.Legend = plugins.legend._element;
  * Provided for backward compatibility, not available anymore
  * @namespace Chart.Title
  * @deprecated since version 2.1.5
- * @todo remove at version 3
  * @private
  */
 Chart.Title = plugins.title._element;
@@ -1758,7 +1755,6 @@ Chart.Title = plugins.title._element;
  * Provided for backward compatibility, use Chart.plugins instead
  * @namespace Chart.pluginService
  * @deprecated since version 2.1.5
- * @todo remove at version 3
  * @private
  */
 Chart.pluginService = Chart.plugins;
@@ -1768,7 +1764,6 @@ Chart.pluginService = Chart.plugins;
  * effect, instead simply create/register plugins via plain JavaScript objects.
  * @interface Chart.PluginBase
  * @deprecated since version 2.5.0
- * @todo remove at version 3
  * @private
  */
 Chart.PluginBase = Chart.Element.extend({});
@@ -1777,7 +1772,6 @@ Chart.PluginBase = Chart.Element.extend({});
  * Provided for backward compatibility, use Chart.helpers.canvas instead.
  * @namespace Chart.canvasHelpers
  * @deprecated since version 2.6.0
- * @todo remove at version 3
  * @private
  */
 Chart.canvasHelpers = Chart.helpers.canvas;
@@ -1786,7 +1780,6 @@ Chart.canvasHelpers = Chart.helpers.canvas;
  * Provided for backward compatibility, use Chart.layouts instead.
  * @namespace Chart.layoutService
  * @deprecated since version 2.8.0
- * @todo remove at version 3
  * @private
  */
 Chart.layoutService = Chart.layouts;
@@ -3673,7 +3666,6 @@ var exports = module.exports = Element.extend({
  * Provided for backward compatibility, use Chart.Animation instead
  * @prop Chart.Animation#animationObject
  * @deprecated since version 2.6.0
- * @todo remove at version 3
  */
 Object.defineProperty(exports.prototype, 'animationObject', {
 	get: function() {
@@ -3685,7 +3677,6 @@ Object.defineProperty(exports.prototype, 'animationObject', {
  * Provided for backward compatibility, use Chart.Animation#chart instead
  * @prop Chart.Animation#chartInstance
  * @deprecated since version 2.6.0
- * @todo remove at version 3
  */
 Object.defineProperty(exports.prototype, 'chartInstance', {
 	get: function() {
@@ -3930,7 +3921,6 @@ module.exports = function(Chart) {
 			 * the "instance" still need to be defined since it might be called from plugins.
 			 * @prop Chart#chart
 			 * @deprecated since version 2.6.0
-			 * @todo remove at version 3
 			 * @private
 			 */
 			me.chart = me;
@@ -4127,7 +4117,6 @@ module.exports = function(Chart) {
 
 				scale.mergeTicksOptions();
 
-				// TODO(SB): I think we should be able to remove this custom case (options.scale)
 				// and consider it as a regular scale part of the "scales"" map only! This would
 				// make the logic easier and remove some useless? custom code.
 				if (item.isDefault) {
@@ -4282,7 +4271,6 @@ module.exports = function(Chart) {
 			 * Provided for backward compatibility, use `afterLayout` instead.
 			 * @method IPlugin#afterScaleUpdate
 			 * @deprecated since version 2.5.0
-			 * @todo remove at version 3
 			 * @private
 			 */
 			plugins.notify(me, 'afterScaleUpdate');
@@ -4783,7 +4771,6 @@ module.exports = function(Chart) {
 	 * Provided for backward compatibility, use Chart instead.
 	 * @class Chart.Controller
 	 * @deprecated since version 2.6.0
-	 * @todo remove at version 3
 	 * @private
 	 */
 	Chart.Controller = Chart;
@@ -6058,8 +6045,6 @@ module.exports = {
 
 		/**
 		 * @function Chart.Interaction.modes.label
-		 * @deprecated since version 2.4.0
-		 * @todo remove at version 3
 		 * @private
 		 */
 		label: indexMode,
@@ -6101,7 +6086,6 @@ module.exports = {
 		/**
 		 * @function Chart.Interaction.modes.x-axis
 		 * @deprecated since version 2.4.0. Use index mode and intersect == true
-		 * @todo remove at version 3
 		 * @private
 		 */
 		'x-axis': function(chart, e) {
@@ -7519,7 +7503,6 @@ module.exports = Element.extend({
 				var cosRotation = Math.cos(angleRadians);
 				var sinRotation = Math.sin(angleRadians);
 
-				// TODO - improve this calculation
 				var labelHeight = (sinRotation * largestTextWidth)
 					+ (tickFont.size * tallestLabelHeightInLines)
 					+ (lineSpace * (tallestLabelHeightInLines - 1))
@@ -9656,7 +9639,6 @@ var exports = module.exports = {
 	 * @param {Number} width - The rectangle's width.
 	 * @param {Number} height - The rectangle's height.
 	 * @param {Number} radius - The rounded amount (in pixels) for the four corners.
-	 * @todo handle `radius` as top-left, top-right, bottom-right, bottom-left array/object?
 	 */
 	roundedRect: function(ctx, x, y, width, height, radius) {
 		if (radius) {
@@ -9824,7 +9806,6 @@ var exports = module.exports = {
  * Provided for backward compatibility, use Chart.helpers.canvas.clear instead.
  * @namespace Chart.helpers.clear
  * @deprecated since version 2.7.0
- * @todo remove at version 3
  * @private
  */
 helpers.clear = exports.clear;
@@ -9833,8 +9814,6 @@ helpers.clear = exports.clear;
  * Provided for backward compatibility, use Chart.helpers.canvas.roundedRect instead.
  * @namespace Chart.helpers.drawRoundedRectangle
  * @deprecated since version 2.7.0
- * @todo remove at version 3
- * @private
  */
 helpers.drawRoundedRectangle = function(ctx) {
 	ctx.beginPath();
@@ -10147,7 +10126,6 @@ module.exports = helpers;
  * Provided for backward compatibility, use Chart.helpers.callback instead.
  * @function Chart.helpers.callCallback
  * @deprecated since version 2.6.0
- * @todo remove at version 3
  * @private
  */
 helpers.callCallback = helpers.callback;
@@ -10157,7 +10135,6 @@ helpers.callCallback = helpers.callback;
  * Array.prototype.indexOf compatibility: Chrome, Opera, Safari, FF1.5+, IE9+
  * @function Chart.helpers.indexOf
  * @deprecated since version 2.7.0
- * @todo remove at version 3
  * @private
  */
 helpers.indexOf = function(array, item, fromIndex) {
@@ -10168,7 +10145,6 @@ helpers.indexOf = function(array, item, fromIndex) {
  * Provided for backward compatibility, use Chart.helpers.valueOrDefault instead.
  * @function Chart.helpers.getValueOrDefault
  * @deprecated since version 2.7.0
- * @todo remove at version 3
  * @private
  */
 helpers.getValueOrDefault = helpers.valueOrDefault;
@@ -10177,7 +10153,6 @@ helpers.getValueOrDefault = helpers.valueOrDefault;
  * Provided for backward compatibility, use Chart.helpers.valueAtIndexOrDefault instead.
  * @function Chart.helpers.getValueAtIndexOrDefault
  * @deprecated since version 2.7.0
- * @todo remove at version 3
  * @private
  */
 helpers.getValueAtIndexOrDefault = helpers.valueAtIndexOrDefault;
@@ -10429,7 +10404,6 @@ module.exports = {
  * Provided for backward compatibility, use Chart.helpers.easing.effects instead.
  * @function Chart.helpers.easingEffects
  * @deprecated since version 2.7.0
- * @todo remove at version 3
  * @private
  */
 helpers.easingEffects = effects;
@@ -11000,7 +10974,6 @@ module.exports = {
  * @see https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
  * @function Chart.helpers.addEvent
  * @deprecated since version 2.7.0
- * @todo remove at version 3
  * @private
  */
 helpers.addEvent = addEventListener;
@@ -11011,7 +10984,6 @@ helpers.addEvent = addEventListener;
  * @see https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener
  * @function Chart.helpers.removeEvent
  * @deprecated since version 2.7.0
- * @todo remove at version 3
  * @private
  */
 helpers.removeEvent = removeEventListener;
@@ -11023,7 +10995,6 @@ var helpers = require(46);
 var basic = require(47);
 var dom = require(48);
 
-// @TODO Make possible to select another platform at build time.
 var implementation = dom._enabled ? dom : basic;
 
 /**
@@ -11149,7 +11120,6 @@ var mappers = {
 	}
 };
 
-// @todo if (fill[0] === '#')
 function decodeFill(el, index, count) {
 	var model = el._model || {};
 	var fill = model.fill;

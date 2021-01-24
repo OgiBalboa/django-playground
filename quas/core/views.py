@@ -16,6 +16,7 @@ from django.views.generic import ListView, DetailView, View
 from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm, ApplicationForm
 from .models import Robot, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile, Brand, Controller
 
+from .modules import findrobot_query as frq
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
@@ -370,7 +371,6 @@ class ItemDetailView(DetailView):
     template_name = "product.html"
 
 class FindRobotView(View):
-
     def get(self,robot = None, post=None,query = False, *args,**kwargs):
         if not self.request.GET.get('query') == "true":
             form = ApplicationForm()
@@ -381,18 +381,14 @@ class FindRobotView(View):
             }
             return render(self.request, "findrobot.html", context)
         else:
-            print(json.loads(self.request.GET.get("parameters")))
-            x = {
-                "name": "John",
-                "age": 30,
-                "city": "New York"
-            }
-            return JsonResponse(json.dumps(x),status=200,safe=False)
+            #TODO:(later)session koşulu koy ve sorgu verilerini session sırasında tut. ( Sıfırdan sorgu yerine) ((Örn. Class verilerini tut session bitince sıfırlarsın))
+            data = json.loads(self.request.GET.get("parameters"))
+            return frq.FindRobot(self.request,data).__get__()
     def post(self, *args,**kwargs):
         form = ApplicationForm(self.request.POST)
         if form.is_valid():
             try:
-                print("Form utputs: ",form.cleaned_data.get("application"))
+                print("Form outputs: ",form.cleaned_data.get("application"))
                 robot = Robot.objects.get(reach=form.cleaned_data.get('reach'))
                 if type(robot) is not list(): robot = [robot]
             except Robot.DoesNotExist:

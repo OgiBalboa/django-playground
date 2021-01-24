@@ -1,22 +1,22 @@
 from django.db.models.signals import post_save
 from django.conf import settings
 from django.db import models
-from django.db.models import Sum
 from django.shortcuts import reverse
 from django_countries.fields import CountryField
-from . import apendix
+from .modules import global_parameters
 from multiselectfield import MultiSelectField
-CATEGORY_CHOICES = apendix.CATEGORY_CHOICES
 
-LABEL_CHOICES = apendix.LABEL_CHOICES
+CATEGORY_CHOICES = global_parameters.CATEGORY_CHOICES
 
-ADDRESS_CHOICES = apendix.ADDRESS_CHOICES
+LABEL_CHOICES = global_parameters.LABEL_CHOICES
 
-ROBOT_APPLICATIONS = apendix.ROBOT_APPLICATIONS
+ADDRESS_CHOICES = global_parameters.ADDRESS_CHOICES
 
-AXIS_MOVEMENT = apendix.AXIS_MOVEMENT
+ROBOT_APPLICATIONS = global_parameters.ROBOT_APPLICATIONS
 
-MOUNTING = apendix.MOUNTING
+AXIS_MOVEMENT = global_parameters.AXIS_MOVEMENT
+
+MOUNTING = global_parameters.MOUNTING
 class UserProfile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

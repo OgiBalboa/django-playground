@@ -1,7 +1,7 @@
 from django import forms
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
-from . import apendix
+from .modules import global_parameters
 
 PAYMENT_CHOICES = (
     ('S', 'Stripe'),
@@ -61,6 +61,6 @@ class PaymentForm(forms.Form):
     use_default = forms.BooleanField(required=False)
 
 class ApplicationForm(forms.Form):
-    application = forms.ChoiceField(choices = apendix.ROBOT_APPLICATIONS,required=False)
+    application = forms.ChoiceField(choices = global_parameters.ROBOT_APPLICATIONS, required=False)
     payload = forms.FloatField(required=False)
     reach = forms.FloatField(required=False)

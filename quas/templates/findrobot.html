@@ -49,16 +49,16 @@
         <div class="card">
             <div class="row">
                 <div class="col-lg-1 mr-2"><span class="badge green"><h4>{{robot.performance_rating}}</h4></span></div>
-            <div class="col">
-            <!-- Card image -->
-            <img class="card-img-top" src="{{robot.image.url}}" alt="Card image cap">
-            </div>
+                <div class="col">
+                <!-- Card image -->
+                <img class="card-img-top" src="{{robot.image.url}}" alt="Card image cap">
+                </div>
             </div>
           <!-- Card content -->
-          <div class="card-body" style="border-top-width: 2px;border-top-style: solid;">
+            <div class="card-body" style="border-top-width: 2px;border-top-style: solid;">
 
             <!-- Title -->
-                            <h5>
+                <h5>
                   <strong>
                     <a href="{{ robot.get_absolute_url }}" class="dark-grey-text"><span style="color:darkblue;">{{robot.brand}}</span> {{ robot.title }}
                       <span class="badge badge-pill {{ robot.get_label_display }}-color">Best Match!</span>
@@ -70,10 +70,10 @@
             <!-- Button -->
             <a href="#" class="btn btn-primary">Details</a>
 
-          </div>
-    </div>
+            </div>
+        </div>
 
-</div>
+    </div>
        {% endfor %}
 </section>
 </div>
