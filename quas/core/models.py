@@ -47,7 +47,7 @@ class Robot(models.Model):
     title = models.CharField(max_length=100)
     category = models.CharField(choices=CATEGORY_CHOICES, max_length=4)
     #application = models.CharField(choices=ROBOT_APPLICATIONS, max_length=4)
-    application = MultiSelectField(choices=ROBOT_APPLICATIONS, max_length=11,blank=True,null=True)
+    application = MultiSelectField(choices=ROBOT_APPLICATIONS, max_length=250,blank=True,null=True)
     label = models.CharField(choices=LABEL_CHOICES, max_length=1)
     description = models.TextField()
     slug = models.SlugField()

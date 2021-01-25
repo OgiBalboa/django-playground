@@ -1,4 +1,6 @@
 from django.urls import path
+from django.views.generic.base import RedirectView
+from django.contrib.staticfiles.storage import staticfiles_storage
 from .views import (
     ItemDetailView,
     CheckoutView,
@@ -16,6 +18,8 @@ from .views import (
 app_name = 'core'
 
 urlpatterns = [
+    path("favicon.ico", RedirectView.as_view(url=staticfiles_storage.url("quas.ico")),
+        ),
     path('', HomeView.as_view(), name='home'),
     path('checkout/', CheckoutView.as_view(), name='checkout'),
     path('order-summary/', OrderSummaryView.as_view(), name='order-summary'),
@@ -29,4 +33,5 @@ urlpatterns = [
     path('request-refund/', RequestRefundView.as_view(), name='request-refund'),
     path('brand/<slug>', HomeView.as_view(), name='brand'),
     path('findrobot/', FindRobotView.as_view(), name='findrobot'),
+
 ]

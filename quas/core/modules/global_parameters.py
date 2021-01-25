@@ -18,6 +18,7 @@ ADDRESS_CHOICES = (
 )
 
 ROBOT_APPLICATIONS = (
+    ('AS', 'Assembly'),
     ('AW', 'Arc Welding'),
     ('CL', 'Cleaning'),
     ('CO', 'Coating'),
@@ -83,12 +84,12 @@ MOUNTING = (
     ('T', 'Tilted'),
     ('I', 'Invert Mount'),
 )
-"""
-with open("js_dict.txt","w") as file:
-    out = "let ROBOT_APPLICATIONS = ["
-    for item in ROBOT_APPLICATIONS:
-        out+= item[1] +", "
-    out+="]"
-    print(out)
-    file.write(out)
-"""
+parameter_groups = [MOUNTING,AXIS_MOVEMENT,PRIMARY_FEATURES, ROBOT_APPLICATIONS, CATEGORY_CHOICES, LABEL_CHOICES]
+
+def match_parameter_with_short_name(parameter_name):
+    for parameter_group in parameter_groups:
+        for parameter in parameter_group:
+            if parameter_name == parameter[1]:
+                print(parameter[0])
+                return parameter[0]
+    return "NO MATCH"

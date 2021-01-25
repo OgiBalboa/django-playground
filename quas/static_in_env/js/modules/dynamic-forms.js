@@ -6,7 +6,7 @@ var multiple_script = document.createElement('script');
 multiple_script.type = 'text/html';
 multiple_script.src = "multiple-select.min.js"
 */
-var ROBOT_APPLICATIONS = ["Arc Welding", "Cleaning", "Coating", "Collaboration", "Cutting", "Deburring", "Depalletizing", "Die Casting", "Dispensing", "Enamelling", "Full Layer Palletizing", "Glazing", "Gluing", "Grinding", "Heavy Arc Welding", "Injection Moulding", "Item Picking", "Loading", "Loading and Unloading"," Machine Tending", "Machine Handling", "Measuring", "Packing", "Painting", "Palletizing", "Part Inspection", "Picking", "Polishing", "Powdering", "Powertrain Assembly", "Pre-Machining", "Press Automation", "Press Brake Tending", "Press Tending", "Rubber Insertion", "Screw Driving", "Sealing", "Small Parts Assembly", "Spot Welding", "Spraying", "Testing", "Unloading", ]
+var ROBOT_APPLICATIONS = ["Assembly", "Arc Welding", "Cleaning", "Coating", "Collaboration", "Cutting", "Deburring", "Depalletizing", "Die Casting", "Dispensing", "Enamelling", "Full Layer Palletizing", "Glazing", "Gluing", "Grinding", "Heavy Arc Welding", "Injection Moulding", "Item Picking", "Loading", "Loading and Unloading"," Machine Tending", "Machine Handling", "Measuring", "Packing", "Painting", "Palletizing", "Part Inspection", "Picking", "Polishing", "Powdering", "Powertrain Assembly", "Pre-Machining", "Press Automation", "Press Brake Tending", "Press Tending", "Rubber Insertion", "Screw Driving", "Sealing", "Small Parts Assembly", "Spot Welding", "Spraying", "Testing", "Unloading", ]
 var AXIS_NUMBER = [1,2,3,4,5,6];
 var MOUNTING_TYPES = ["Any", "Floor", "Wall", "Tilted", "Invert Mount",];
 var FIND_ROBOT_PARAMETER = {
@@ -18,14 +18,13 @@ var FIND_ROBOT_PARAMETER = {
     "axis_number":["multi-select",["axis_number","Specify Axis Number",AXIS_NUMBER]],
     "brand":["text",["brand","Specify Brand Name",false]],
     "repeatability":["float",["repeatability","Specify Repeatability","mm"]],
-    "picking_cycle":["float",["picking_cycle","Specify Picking Cycle","s"]],
+    "picking_cycle":["float",["picking_cycle","Specify Picking Cycle","s","gte"]],
     "mounting":["multi-select",["mounting","Specify Mounting Type",MOUNTING_TYPES]],
     "weight":["int",["weight","Specify Weight","kg","gte"]],
     "speed":["float",["speed","Specify Speed","m/s","gte"]],
 }
 //---------------GLOBAL PARAMETERS---------------------------------
 var MAIN = document.getElementsByTagName("main")[0];
-console.log(MAIN);
 var FIELD_SELECT = "";
 var FIELDS = {};
 var FORM_div = document.getElementById("findrobot_form_div");
@@ -37,6 +36,93 @@ SUBMIT.addEventListener("click",FindBestRobot);
 SUBMIT.type = "button";
 
 //TODO: parametreleri şu formatta düzenle: [id, [["text1,unit1], [text2,unit2]] ] böylece sınırsız text field açarsın.
+
+class ShowRobots{
+    constructor() {
+        this.exist = false;
+        this.header = document.createElement('h1');
+        this.header.align = 'center';
+        this.header.textContent = "Best Robot is One of these:";
+
+        this.container = document.createElement('div');
+        this.container.className = "container";
+
+        this.section = document.createElement('section');
+        this.section.className = "text-center mt-4 mb-4";
+
+        this.row = document.createElement('div');
+        this.row.className = "row wow fadeIn";
+
+        this.container.appendChild(this.section);
+        this.section.appendChild(this.row);
+
+    }
+    initialize() {
+        this.exist = true;
+        MAIN.appendChild(this.header);
+        MAIN.appendChild(this.container);
+    }
+    show(data) {
+        if (this.exist != true) this.initialize();
+        this.row.innerHTML = ``;
+        for (var robot of data) {
+            var card = new RobotCard(robot,this.row);
+        }
+    }
+}
+class RobotCard {
+    constructor (data,row) {
+        //var robot = JSON.parse(data);
+         var robot = data;
+         this.robot = robot;
+         this.col = document.createElement("div");
+
+         this.col.className = "col-lg-3 col-md-6 mb-4 animated fadeInLeft";
+         /*
+         this.card = document.createElement("div");
+         this.card.className = "card";
+         this.col.appendChild(this.card);
+         // PERFORMANCE RATING
+         rating_row = document.createElement("div");
+         rating_row.className = "row";
+         rating_col = document.createElement("div");
+         rating_col.className = "col-lg-1 mr-2";
+         rating_row.appendChild(rating_col);
+
+
+         //CARD IMAGE
+        */
+    this.col.innerHTML = `
+        <div class="card">
+            <div class="row">
+                <div class="col-lg-1 mr-2"><span class="badge green"><h4>${robot.performance_rating}</h4></span></div>
+                <div class="col">
+
+                <img class="card-img-top" src="${robot.image_url}" alt="Card image cap">
+                </div>
+            </div>
+            <div class="card-body" style="border-top-width: 2px;border-top-style: solid;">
+                <h5>
+                  <strong>
+                    <a href="${robot.absolute_url}" class="dark-grey-text"><span style="color:darkblue;">${robot.brand_name}</span> ${robot.title}
+                      <span class="badge badge-pill success-color">Best Match!</span>
+                    </a>
+                  </strong>
+                </h5>
+            <p class="card-text">Şimdilik Dursun</p>
+            <a href="#" class="btn btn-primary">Details</a>
+            </div>
+        </div>
+    `
+    row.appendChild(this.col);
+    }
+    get_absolute_url (){
+
+    }
+
+}
+
+
 //----------------------FIELDS--------------------
 
 class StringField {
@@ -81,7 +167,7 @@ class StringField {
         this.div.appendChild(inner_div2);
     }
     get_value(){
-        return this.input.value;
+        return [this.input.value];
     }
 }
 class MultiSelectField {
@@ -176,18 +262,6 @@ class SingleSelectField {
 }
 //------------------FUNCTIONS----------------
 
-function field_selector() {
-    parameters = Object.values(FIND_ROBOT_PARAMETER);
-    var choices = [];
-    var values = [];
-    for (var i = 0; i < parameters.length; i++) {
-        choices.push(parameters[i][1][1]);
-        values.push(parameters[i][1][0]);
-    }
-    FIELD_SELECT = new SingleSelectField("select_field","Choose a search parameter",choices,values);
-    FORM_div.appendChild(FIELD_SELECT.div);
-    FORM.appendChild(SUBMIT);
-}
 function add_field(event) {
 //TODO:add error handling here also parameters can be a class
     var selectElement = event.target;
@@ -219,7 +293,6 @@ function add_field(event) {
 }
 function remove_field(x){
     pull_form();
-    console.log(x);
     FORM_div.removeChild(document.getElementById(x));
     delete FIELDS[x];
 }
@@ -232,90 +305,7 @@ function pull_form() {
 }
 //
 
-class ShowRobots{
-    constructor() {
-        this.exist = false;
-        this.header = document.createElement('h1');
-        this.header.align = 'center';
-        this.header.textContent = "Best Robot is One of these:";
 
-        this.container = document.createElement('div');
-        this.container.className = "container";
-
-        this.section = document.createElement('section');
-        this.section.className = "text-center mt-4 mb-4";
-
-        this.row = document.createElement('div');
-        this.row.className = "row wow fadeIn";
-
-        this.container.appendChild(this.section);
-        this.section.appendChild(this.row);
-
-    }
-    initialize() {
-        this.exist = true;
-        MAIN.appendChild(this.header);
-        MAIN.appendChild(this.container);
-    }
-    show(data) {
-        if (this.exist != true) this.initialize();
-        this.row.innerHTML = ``;
-        for (var robot of data) {
-            var card = new RobotCard(robot,this.row);
-        }
-    }
-}
-class RobotCard {
-    constructor (data,row) {
-        //var robot = JSON.parse(data);
-         var robot = data;
-         this.robot = robot;
-         this.col = document.createElement("div");
-
-         this.col.className = "col-lg-3 col-md-6 mb-4 animated fadeInLeft";
-         /*
-         this.card = document.createElement("div");
-         this.card.className = "card";
-         this.col.appendChild(this.card);
-         // PERFORMANCE RATING
-         rating_row = document.createElement("div");
-         rating_row.className = "row";
-         rating_col = document.createElement("div");
-         rating_col.className = "col-lg-1 mr-2";
-         rating_row.appendChild(rating_col);
-
-
-         //CARD IMAGE
-        */
-    this.col.innerHTML = `
-        <div class="card">
-            <div class="row">
-                <div class="col-lg-1 mr-2"><span class="badge green"><h4>${robot.performance_rating}</h4></span></div>
-                <div class="col">
-
-                <img class="card-img-top" src="${robot.image_url}" alt="Card image cap">
-                </div>
-            </div>
-            <div class="card-body" style="border-top-width: 2px;border-top-style: solid;">
-                <h5>
-                  <strong>
-                    <a href="${robot.absolute_url}" class="dark-grey-text"><span style="color:darkblue;">${robot.brand_name}</span> ${robot.title}
-                      <span class="badge badge-pill success-color">Best Match!</span>
-                    </a>
-                  </strong>
-                </h5>
-            <p class="card-text">Şimdilik Dursun</p>
-            <a href="#" class="btn btn-primary">Details</a>
-            </div>
-        </div>
-    `
-    row.appendChild(this.col);
-    }
-    get_absolute_url (){
-
-    }
-
-}
 show_robots = new ShowRobots();
 function FindBestRobot () {
     $.ajax({
@@ -331,3 +321,16 @@ function FindBestRobot () {
             }
             })
     }
+// MAIN FUNCTION -- SCRIPT STARTS HERE --
+function field_selector() {
+    parameters = Object.values(FIND_ROBOT_PARAMETER);
+    var choices = [];
+    var values = [];
+    for (var i = 0; i < parameters.length; i++) {
+        choices.push(parameters[i][1][1]);
+        values.push(parameters[i][1][0]);
+    }
+    FIELD_SELECT = new SingleSelectField("select_field","Choose a search parameter",choices,values);
+    FORM_div.appendChild(FIELD_SELECT.div);
+    FORM.appendChild(SUBMIT);
+}

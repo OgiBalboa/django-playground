@@ -1,26 +1,38 @@
 from core.models import Robot
+from core.modules import global_parameters
 from django.core import serializers
 from django.http import JsonResponse, HttpResponse
 from django.contrib import messages
 import json
+from django.db.models import Q
 
 class FindRobot:
 
     def __init__(self,request, data):
-        self.query = {}
+        self.q_kwargs = {}  #queries with keyword arguments
+        self.q_args = []     #queries with arguments
         self.request = request
         self.parameter_parser(data)
     def parameter_parser(self,data):
+        '''
+        data = [ hint, [values] ]
+        '''
         for key in data.keys():
+
             if data[key][0] == "gte":
-                self.query[key+"__gte"] = data[key][-1] #TODO:(soon) daha anlaşılır ve kesin bir hale getir.
-            else : self.query[key] = data[key][-1]
-        self.result = Query(self.request, self.query)
+                self.q_kwargs[key+"__gte"] = data[key][-1][0] #TODO:(soon) daha anlaşılır ve kesin bir hale getir.
+            elif data[key][0] == "multi":
+                for value in data[key][-1]:
+                    #created Q object ->  key__contains = value (matched with short name) and append to args
+                    self.q_args.append(Q(**{key+"__contains":global_parameters.match_parameter_with_short_name(value)}))
+            else : self.q_kwargs[key] = data[key][-1]
+        self.result = Query(self.request, self.q_args,self.q_kwargs)
 
     def __get__(self):
         return self.result
-def Query(request, parameters):
-    robots = Robot.objects.filter(**parameters)
+def Query(request, args, kwargs):
+    robots = Robot.objects.filter(*args,**kwargs)
+    #robots = Robot.objects.filter(Q(application__contains = "AS" ))
     if robots :
         values = robots.values()
         for i in range(len(values)):
