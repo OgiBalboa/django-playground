@@ -34,7 +34,7 @@ SUBMIT.className = "btn btn-info btn-block unique-color my-4waves-effect active 
 SUBMIT.textContent = "Find BestRobot!";
 SUBMIT.addEventListener("click",FindBestRobot);
 SUBMIT.type = "button";
-
+SUBMIT.setAttribute("autofocus","autofocus");
 //TODO: parametreleri şu formatta düzenle: [id, [["text1,unit1], [text2,unit2]] ] böylece sınırsız text field açarsın.
 
 class ShowRobots{
@@ -64,9 +64,15 @@ class ShowRobots{
     }
     show(data) {
         if (this.exist != true) this.initialize();
-        this.row.innerHTML = ``;
-        for (var robot of data) {
-            var card = new RobotCard(robot,this.row);
+        if (data == "ROBOT DOES NOT EXIST"){
+            //this.row.innerHTML = "<div class='container'><h4 align='center'>Unfortunately, could not find matching robot...</h4></div>";
+            this.header.textContent = "Unfortunately, could not find matching robot...";
+        }
+        else{
+            this.row.innerHTML = ``;
+            for (var robot of data) {
+                var card = new RobotCard(robot,this.row);
+            }
         }
     }
 }
@@ -78,20 +84,6 @@ class RobotCard {
          this.col = document.createElement("div");
 
          this.col.className = "col-lg-3 col-md-6 mb-4 animated fadeInLeft";
-         /*
-         this.card = document.createElement("div");
-         this.card.className = "card";
-         this.col.appendChild(this.card);
-         // PERFORMANCE RATING
-         rating_row = document.createElement("div");
-         rating_row.className = "row";
-         rating_col = document.createElement("div");
-         rating_col.className = "col-lg-1 mr-2";
-         rating_row.appendChild(rating_col);
-
-
-         //CARD IMAGE
-        */
     this.col.innerHTML = `
         <div class="card">
             <div class="row">
@@ -316,7 +308,7 @@ function FindBestRobot () {
 
       success: function( data )
             {
-            console.log(data);
+               //console.log(data);
                show_robots.show(data);
             }
             })

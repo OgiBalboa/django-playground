@@ -118,6 +118,7 @@ class RobotAdmin(admin.ModelAdmin):
 admin.site.register(Robot,RobotAdmin)
 admin.site.register(Brand)
 admin.site.register(Controller)
+"""
 admin.site.register(OrderItem)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Payment)
@@ -125,3 +126,4 @@ admin.site.register(Coupon)
 admin.site.register(Refund)
 admin.site.register(Address, AddressAdmin)
 admin.site.register(UserProfile)
+"""

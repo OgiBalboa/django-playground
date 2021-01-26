@@ -370,18 +370,18 @@ class ItemDetailView(DetailView):
     model = Robot
     template_name = "product.html"
 
+class RobotCompareView(View):
+    def get (self,*args,**kwargs):
+
+        return render(self.request,"robot-compare.html")
+    def post (self,*args,**kwargs):
+        pass
+
 class FindRobotView(View):
-    def get(self,robot = None, post=None,query = False, *args,**kwargs):
+    def get(self,*args,**kwargs):
         if not self.request.GET.get('query') == "true":
-            form = ApplicationForm()
-            context = {
-                "robots": robot,
-                "form": form,
-                "query": query,
-            }
-            return render(self.request, "findrobot.html", context)
+            return render(self.request, "findrobot.html")
         else:
-            #TODO:(later)session koşulu koy ve sorgu verilerini session sırasında tut. ( Sıfırdan sorgu yerine) ((Örn. Class verilerini tut session bitince sıfırlarsın))
             data = json.loads(self.request.GET.get("parameters"))
             return frq.FindRobot(self.request,data).__get__()
     def post(self, *args,**kwargs):

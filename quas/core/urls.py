@@ -12,7 +12,8 @@ from .views import (
     PaymentView,
     AddCouponView,
     RequestRefundView,
-    FindRobotView
+    FindRobotView,
+    RobotCompareView
 )
 
 app_name = 'core'
@@ -33,5 +34,6 @@ urlpatterns = [
     path('request-refund/', RequestRefundView.as_view(), name='request-refund'),
     path('brand/<slug>', HomeView.as_view(), name='brand'),
     path('findrobot/', FindRobotView.as_view(), name='findrobot'),
+    path('robotcompare/', RobotCompareView.as_view(), name='robotcompare'),
 
 ]
