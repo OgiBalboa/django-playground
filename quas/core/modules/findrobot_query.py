@@ -1,4 +1,4 @@
-from core.models import Robot
+from core.models import Robot, Brand
 from core.modules import global_parameters
 from django.core import serializers
 from django.http import JsonResponse, HttpResponse
@@ -18,14 +18,16 @@ class FindRobot:
         data = [ hint, [values] ]
         '''
         for key in data.keys():
-
+            #print(data)
             if data[key][0] == "gte":
                 self.q_kwargs[key+"__gte"] = data[key][-1][0] #TODO:(soon) daha anlaşılır ve kesin bir hale getir.
+            elif data[key][0] == "brand":
+                self.q_kwargs[key] = Brand.objects.get(title=data[key][-1][0])
             elif data[key][0] == "multi":
                 for value in data[key][-1]:
                     #created Q object ->  key__contains = value (matched with short name) and append to args
                     self.q_args.append(Q(**{key+"__contains":global_parameters.match_parameter_with_short_name(value)}))
-            else : self.q_kwargs[key] = data[key][-1]
+            else : self.q_kwargs[key] = data[key][-1][0]
         self.result = Query(self.request, self.q_args,self.q_kwargs)
 
     def __get__(self):

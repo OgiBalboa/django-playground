@@ -385,18 +385,7 @@ class FindRobotView(View):
             data = json.loads(self.request.GET.get("parameters"))
             return frq.FindRobot(self.request,data).__get__()
     def post(self, *args,**kwargs):
-        form = ApplicationForm(self.request.POST)
-        if form.is_valid():
-            try:
-                print("Form outputs: ",form.cleaned_data.get("application"))
-                robot = Robot.objects.get(reach=form.cleaned_data.get('reach'))
-                if type(robot) is not list(): robot = [robot]
-            except Robot.DoesNotExist:
-                robot = None
-        else:
-            robot = None
-            print("EERROOOR",form.errors)
-        return self.get(robot,post = self.request.POST,query = True)
+        return HttpResponse(self.request,"POST",status = 200)
 
 @login_required
 def add_to_cart(request, slug):

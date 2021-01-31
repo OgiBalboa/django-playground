@@ -3,28 +3,68 @@
 {% load cart_template_tags %}
 {% block content %}
 {% load static %}
-{% comment %}
 <main>
 <script type="text/javascript">
     navbar_active("RobotCompare_button");
 </script>
-<h1 align="center"> HELLO WORLD !</h1>
+<script src="{% static 'js/jquery-3.4.1.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/modules/dynamic-forms.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/modules/robot-module-tools.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/modules/robot-compare.js' %}" type="text/javascript"></script>
+<h1 align="center">ROBOT COMPARATION</h1>
 <div id="main_container" class="container">
-<section class="text-center mt-4 mb-4">
+<!--section class="text-center mt-4 mb-4"-->
+    <div class="row">
+        <div class="col">
+            <!-- NAME AND BRAND INFO -->
 
+            <div id="name_class_div" class="row">
+                <div id="robot_1_title" class="col text-center">
+                    <script>
+                         var tit = document.getElementById("robot_1_title");
+                         $("#robot_1_title").append(brand_names_dropdown("robot_1").div)
+                    </script>
+                </div>
+                <div id="robot_2_title" class="col text-center">
+                    <script>
+                         $("#robot_2_title").append(brand_names_dropdown("robot_2").div)
+                    </script>
+                </div>
+            </div>
+            <!-- NAME AND BRAND INFO -->
+            <div id="robot_card_div" class="row">
+                <div class="col text-center">
+                    <div id="robot_1_card_div" class = "row justify-content-center">
+                        <script type="text/javascript">
+                            function handler(data){
+                                robot_1_card = new RobotCard(data[0], document.getElementById("robot_1_card_div"));
+                                robot_1_card.col.id = "robot_1_card";
+                                $("#robot_1_card").removeClass("col-lg-3").addClass("col-lg-7")
+                            }
+                            FindRobot({"slug":["single",["nachi_mz07"]]},handler);
+                        </script>
+                    </div>
+                </div>
 
-</section>
+                <div class="col text-center">
+                    <div id="robot_2_card_div" class="row justify-content-center">
+                        <script>
+                            function handler(data){
+                                robot_2_card = new RobotCard(data[0], document.getElementById("robot_2_card_div"));
+                                robot_2_card.col.id = "robot_2_card";
+                                $("#robot_2_card").removeClass("col-lg-3").addClass("col-lg-7")
+                            }
+                            FindRobot({"slug":["single",["abb_irb1100"]]},handler);
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--/section-->
 </div>
 </main>
-{% endcomment %}
-<div>
-  <h1>Heading</h1>
-  <p>Bunch of awesome content</p>
-</div>
 
-<section>
-  <h1>Heading</h1>
-  <p>Bunch of awesome content</p>
-</section>
 
 {% endblock content %}
