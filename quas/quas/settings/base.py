@@ -15,6 +15,8 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.sites',
 
+    'rest_framework',
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -23,6 +25,7 @@ INSTALLED_APPS = [
     'myapp',
     'covid',
     'core',
+    'api_basic',
 ]
 
 MIDDLEWARE = [

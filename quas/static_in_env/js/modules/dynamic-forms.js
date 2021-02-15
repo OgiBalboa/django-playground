@@ -120,16 +120,21 @@ class MultiSelectField {
         this.on_selected = this.on_selected.bind(this);
         //-------------MAIN DIV-------------
         this.div = document.createElement("div");
-        this.div.className = "col"
+        this.div.className = "card mt-3 mb-3";
         this.id = id;
         var id = id;
         this.hint = hint;
         //-------------SELECT -------------
+        this.selected_values = document.createElement("p");
+        this.selected_values.style = "color:black";
+        this.selected_values.innerHTML = "Choose Application Type";
+        this.div.appendChild(this.selected_values);
+
         this.select = document.createElement("select");
         this.select.id = id;
-        //this.select.setAttribute("multiple","multiple");
+        this.select.setAttribute("multiple","multiple");
         this.select.setAttribute("searchable","Search");
-        this.select.className = "mdb-select multiple-select md-form";
+        this.select.className = "form-select";
         this.default_option = document.createElement("option");
         this.default_option.setAttribute("disabled","disabled");
         this.default_option.setAttribute("selected","selected");
@@ -161,21 +166,25 @@ class MultiSelectField {
             this.selected.push(value);
             this.change_option_name(selectElement,value,value+" (selected)");
         }
-        selectElement.selectedIndex = 0;
          if (this.selected.length >0) {
             var selected_names = ""
             for (var i=0; i<this.selected.length; i++) {
                 selected_names += this.selected[i] + ", ";
             }
         }
-        else selected_names = "Choose Application Type";
+        else {
+            selected_names = "Choose Application Type";
+            }
         this.change_option_name(selectElement, "default", selected_names);
+        this.selected_values.innerHTML = selected_names;
     }
     //-----------CHANGE OPTION NAME FUNCTION-----------
     change_option_name(select,val,name){
         for (var i=0; i<select.length; i++) {
         if (select.options[i].value == val){
             select.options[i].innerHTML = name;
+            // (selected ekler veya normale çevirir)
+            select.options[i].selected = false;
             }
         }
     }
