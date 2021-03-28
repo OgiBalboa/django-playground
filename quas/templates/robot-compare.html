@@ -22,7 +22,25 @@
                 <div id="robot_1_title" class="col text-center">
                     <script>
                          var tit = document.getElementById("robot_1_title");
+                         //var csrftoken = getCookie('csrftoken');
                          $("#robot_1_title").append(brand_names_dropdown("robot_1").div)
+                         $("#robot_1").change(function() {
+                            if ( $("#robot_2").value != "default" ) {
+                                $.ajax({
+                                    type: "GET",
+                                    url: "/robotcompare/",
+                                    //data: {'csrfmiddlewaretoken': csrftoken},
+                                    data: { "function": "get_datasheet",
+                                            "robot_1":"nachi_mz07",
+                                            "robot_2": "abb_irb1100"},
+                                    success : function(data) {
+                                    console.log(data);
+                                        $("#main_container").append(data);
+                                    }
+                                })
+                            }
+                         })
+
                     </script>
                 </div>
                 <div id="robot_2_title" class="col text-center">
@@ -61,25 +79,8 @@
             </div>
 
         </div>
-        <!-- DATASHEET -->
     </div>
-    <div class="row">
-        <div class="col mx-auto text-center mt-3">
-            <button class="btn btn-primary btn-block" type="button" data-toggle="collapse"
-                    role="button"
-                    data-target="#datasheet_div"
-                    aria-expanded="false"
-                    aria-controls="datasheet_div">
-            DATASHEET (Show/Hide)
-            </button>
-            <div class="col collapse mt-3" id="datasheet_div">
-                <div class="card text-center">
-                VOAAAAAAAAAAAAAAAAAAAAAYY
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <!-- DATASHEET -->
 </div>
 </main>
 

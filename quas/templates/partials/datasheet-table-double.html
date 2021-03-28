@@ -1,10 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<div class="row">
+    <div class="col mx-auto text-center mt-3">
+        <button class="btn btn-primary btn-block" type="button" data-toggle="collapse"
+                role="button"
+                data-target="#datasheet_div"
+                aria-expanded="false"
+                aria-controls="datasheet_div">
+        DATASHEET (Show/Hide)
+        </button>
+        <div class="row collapse mt-3" id="datasheet_div">
+            <div class="col ml-1 mr-1 card text-center">
+                <table style="width:100%">
+                    {% for data_key, data_value in robot_1.get_datasheet.items %}
+                        <tr>
+                           <td> <b> {{data_key}} </b></td>
+                           <td> {{data_value}} </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="col ml-1 mr-1 card text-center">
+                <table style="width:100%">
+                    {% for data_key, data_value in robot_2.get_datasheet.items %}
+                        <tr>
+                           <td> <b> {{data_key}} </b></td>
+                           <td> {{data_value}} </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

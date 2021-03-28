@@ -17,6 +17,8 @@ ROBOT_APPLICATIONS = global_parameters.ROBOT_APPLICATIONS
 AXIS_MOVEMENT = global_parameters.AXIS_MOVEMENT
 
 MOUNTING = global_parameters.MOUNTING
+
+DATASHEET = global_parameters.DATASHEET
 class UserProfile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -117,6 +119,13 @@ class Robot(models.Model):
             'slug': self.slug
         })
 
+    def get_datasheet(self):
+        datasheet = {}
+        for data_key in DATASHEET:
+            datasheet.update({
+                data_key: getattr(self, data_key)
+            })
+        return datasheet
 
 class OrderItem(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,

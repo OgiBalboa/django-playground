@@ -55,27 +55,13 @@ class RobotCard {
     }
 
 }
-class DatasheetTable {
-    constructor(robots){
+function DatasheetTable (robot) {
     if (robots.length > 1) {
         FindRobot(slug = "nachi_mz07");
         single_table()
     }
-    }
-    single_table(){
-
-    }
-
-    comparison_table(){
-
-    }
-
-    extract_data(data){
-        return data
-    }
-
 }
-function FindRobot (query,handler,slug = false) {
+function FindRobot (query, handler, slug = false) {
     //query = { key: [ hint, [values] ] }
     $.ajax({
       url: '/findrobot',

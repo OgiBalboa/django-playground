@@ -84,6 +84,10 @@ MOUNTING = (
     ('T', 'Tilted'),
     ('I', 'Invert Mount'),
 )
+
+DATASHEET = ["number_of_axes", "payload", "reach", "repeatability", "picking_cycle", "mounting",
+             "weight", "axis1_speed", "axis1_movement", "axis2_speed", "axis2_movement", "axis3_speed", "axis3_movement",
+             "axis4_speed", "axis4_movement", "axis5_speed", "axis5_movement", "axis6_speed", "axis6_movement"]
 parameter_groups = [MOUNTING,AXIS_MOVEMENT,PRIMARY_FEATURES, ROBOT_APPLICATIONS, CATEGORY_CHOICES, LABEL_CHOICES]
 
 def match_parameter_with_short_name(parameter_name):

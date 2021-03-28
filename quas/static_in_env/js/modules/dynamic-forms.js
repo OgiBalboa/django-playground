@@ -192,6 +192,7 @@ class MultiSelectField {
 class SingleSelectField {
     constructor(id, text, choices, values = choices, hint = "single"){
         this.div = document.createElement("div");
+        this.div.id = id
         this.select = document.createElement("select");
         this.id = id;
         this.id = id;
