@@ -18,6 +18,19 @@
                     {% endfor %}
                 </table>
             </div>
+
+                        <div class="col ml-1 mr-1 card text-center">
+                <table style="width:100%">
+
+                    {% for i in robot_1.get_datasheet %}
+                        <tr>
+                           <td> <b> BOŞ </b></td>
+                           <td> BOŞ </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
             <div class="col ml-1 mr-1 card text-center">
                 <table style="width:100%">
                     {% for data_key, data_value in robot_2.get_datasheet.items %}

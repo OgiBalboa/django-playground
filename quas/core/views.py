@@ -51,8 +51,20 @@ class ItemDetailView(DetailView):
     model = Robot
     template_name = "product.html"
 
+    def get(self,*args, **kwargs):
+
+        funcs = self.request.GET.get("function")
+        if funcs and funcs == "get_datasheet":
+            robot = self.request.GET.get("robot")
+            context = {
+                "robot": Robot.objects.get(slug = robot)
+            }
+            return render(self.request, "partials/datasheet-table-single.html", context)
+        else:
+            return super(ItemDetailView, self).get(*args, **kwargs)
+
 class RobotCompareView(View):
-    def get (self,*args,**kwargs):
+    def get (self,*args, **kwargs):
         funcs = self.request.GET.get("function")
         if funcs and funcs == "get_datasheet":
             robot_1 = self.request.GET.get("robot_1")
