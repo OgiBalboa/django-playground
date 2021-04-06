@@ -1,4 +1,5 @@
-from core.models import Robot, Brand
+from core.models import Brand
+from core.robot.models import Robot, Axis
 from core.modules import global_parameters
 from django.core import serializers
 from django.http import JsonResponse, HttpResponse

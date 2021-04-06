@@ -187,7 +187,7 @@
     <script>
         $.ajax({
             type: "GET",
-            url: "/product/{{object.slug}}",
+            url: "/get_datasheet",
             //data: {'csrfmiddlewaretoken': csrftoken},
             data: { "function": "get_datasheet",
                     "robot":"{{object.slug}}"
