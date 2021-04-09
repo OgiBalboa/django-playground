@@ -1,9 +1,6 @@
-from django.db.models.signals import post_save
-from django.conf import settings
 from django.db import models
 from django.shortcuts import reverse
-from core.modules import global_parameters
-from core.models import Brand, Controller
+from core.robot.utils import global_parameters
 from multiselectfield import MultiSelectField
 
 CATEGORY_CHOICES = global_parameters.CATEGORY_CHOICES
@@ -45,7 +42,7 @@ class Axis(models.Model):
 
 class Robot(models.Model):
     # -------------------GENERAL INFOS---------------------------
-    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
+    brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     category = models.CharField(choices=CATEGORY_CHOICES, max_length=4)
     # application = models.CharField(choices=ROBOT_APPLICATIONS, max_length=4)
@@ -76,10 +73,10 @@ class Robot(models.Model):
     mounting = MultiSelectField(choices=MOUNTING, max_length=30)
     weight = models.IntegerField(default=1)  # kg
 
-    controller = models.ForeignKey(Controller, on_delete=models.CASCADE)
+    controller = models.ForeignKey('Controller', on_delete=models.CASCADE)
 
-    axis = models.ForeignKey(Axis, null=True, blank=True,
-                                      on_delete=models.PROTECT, unique=True)
+    axis = models.OneToOneField(Axis, null=True, blank=True,
+                                on_delete=models.PROTECT)
 
     def __str__(self):
         return self.title
@@ -106,8 +103,47 @@ class Robot(models.Model):
 
     def get_datasheet(self):
         datasheet = {}
-        for data_key in DATASHEET:
-            datasheet.update({
-                data_key: getattr(self, data_key)
-            })
+        for attribute_group, attributes in global_parameters.ATTRIBUTE_GROUPS.items():
+            datasheet[attribute_group] = {}
+            for attribute in attributes:
+                if attribute == "axis":
+                    for i in range(1, self.number_of_axes+1):
+                        datasheet[attribute_group].update({
+                            "Axis"+str(i): "Speed : " + str(getattr(self.axis, "axis"+str(i)+"_speed") )+ \
+                                   "  Movement : " + getattr(self.axis, "axis"+str(i)+"_movement")
+                        })
+                else:
+                    datasheet[attribute_group].update({
+                        attribute.replace("_", " ").title() : getattr(self, attribute)
+                    })
+        datasheet.pop("Information")
         return datasheet
+
+
+class Brand(models.Model):
+    title = models.CharField(max_length=100)
+    '''
+    Brand infos, name, country, date, point, etc...
+    '''
+
+    def __str__(self):
+        return self.title
+
+
+class Controller(models.Model):
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+
+    # ----------------DATASHEET------------------
+
+    def __str__(self):
+        return self.title
+
+
+class RobotClass(models.Model):
+    title = models.CharField(max_length=50)
+    attributes = models.JSONField()
+    attributes_kwargs = models.JSONField()
+
+    def __str__(self):
+        return self.title

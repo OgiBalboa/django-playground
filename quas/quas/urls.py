@@ -20,9 +20,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('admin/', admin.site.urls),
-    path('myapp/',include( 'myapp.urls')),
-    path('covid/',include( 'covid.urls')),
-    path('',include( 'core.urls')),
+    path('', include( 'core.robot.urls')),
+    path('user/', include( 'core.users.urls')),
 ]
 if settings.DEBUG:
     import debug_toolbar
