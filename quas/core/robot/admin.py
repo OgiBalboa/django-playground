@@ -34,7 +34,7 @@ class RobotAdmin(admin.ModelAdmin):
         }
          ),
         ('DATASHEET', {
-            'fields': ['attribute_groups', 'controller', 'working_range_image', 'number_of_axes', 'payload', 'reach',
+            'fields': ['controller', 'working_range_image', 'number_of_axes', 'payload', 'reach',
                        'repeatability', 'picking_cycle', 'mounting', 'weight', 'axis'],
             'classes': ('collapse',)
         }

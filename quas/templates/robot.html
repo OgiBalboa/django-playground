@@ -189,9 +189,7 @@
             type: "GET",
             url: "/get_datasheet",
             //data: {'csrfmiddlewaretoken': csrftoken},
-            data: { "function": "get_datasheet",
-                    "robot":"{{object.slug}}"
-                    },
+            data: {"robot":"{{object.slug}}"},
             success : function(data) {
             console.log(data);
                 $("#main_container").append(data);

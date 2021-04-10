@@ -9,13 +9,24 @@
         </button>
         <div class="row collapse mt-3" id="datasheet_div">
             <div class="col ml-1 mr-1 card text-center">
-                <table style="width:100%">
-                    {% for data_key, data_value in robot.get_datasheet.items %}
+                <table class="table table-bordered mt-3" style="width:100%">
+                    <tbody>
+                    {% for attribute_group, attributes in robot.get_datasheet.items %}
+                        <th colspan="2">
+                            {{attribute_group}}
+                        </th>
                         <tr>
-                           <td> <b> {{data_key}} </b></td>
-                           <td> {{data_value}} </td>
+                            <td><b>Attribute</b></td>
+                            <td><b>Value </b></td>
                         </tr>
+                        {% for data_key, data_value in attributes.items %}
+                            <tr>
+                               <td> <b> {{data_key}} </b></td>
+                               <td> {{data_value}} </td>
+                            </tr>
+                        {% endfor %}
                     {% endfor %}
+                    </tbody>
                 </table>
             </div>
         </div>

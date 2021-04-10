@@ -31,11 +31,15 @@
                                     url: "/get_datasheets",
                                     //data: {'csrfmiddlewaretoken': csrftoken},
                                     data: { "function": "get_datasheet",
-                                            "robot_1":"nachi_mz07",
-                                            "robot_2": "abb_irb1100"},
+                                            "robot_1": "abb_irb1100",
+                                            "robot_2": "nachi_mz07",
+                                            },
                                     success : function(data) {
-                                    console.log(data);
+                                         console.log(data);
                                         $("#main_container").append(data);
+                                    },
+                                    error : function(data) {
+                                        console.log($("#robot_1").value);
                                     }
                                 })
                             }

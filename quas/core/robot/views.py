@@ -79,4 +79,4 @@ class HomeView(ListView):
 
 class ItemDetailView(DetailView):
     model = Robot
-    template_name = "product.html"
+    template_name = "robot.html"
