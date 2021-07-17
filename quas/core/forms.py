@@ -1,7 +1,7 @@
 from django import forms
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
-from .robot.utils import global_parameters
+from .products.utils import global_parameters
 
 PAYMENT_CHOICES = (
     ('S', 'Stripe'),

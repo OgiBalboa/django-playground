@@ -1,7 +1,7 @@
 from django.urls import path
 from django.views.generic.base import RedirectView
 from django.contrib.staticfiles.storage import staticfiles_storage
-from core.robot.views import FindRobotView, RobotCompareView, get_datasheet, get_datasheets, ItemDetailView, HomeView
+from core.products.views import FindRobotView, RobotCompareView, get_datasheet, get_datasheets, ItemDetailView, HomeView
 app_name = 'core'
 
 urlpatterns = [

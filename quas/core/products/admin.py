@@ -1,7 +1,8 @@
 from django.contrib import admin
 
-from core.robot.models import Robot, Axis, Brand, Controller
-from core.users.models import UserProfile
+from core.products.models import Product, Brand, Controller, Attribute, \
+    AttributeGroup, RobotClass
+
 
 def make_refund_accepted(modeladmin, request, queryset):
     queryset.update(refund_requested=False, refund_granted=True)
@@ -10,15 +11,11 @@ def make_refund_accepted(modeladmin, request, queryset):
 make_refund_accepted.short_description = 'Update orders to refund granted'
 
 
-class RobotAxis(admin.TabularInline):
-    model = Axis
-    extra = 0
-    classes = ('collapse',)
 class RobotAdmin(admin.ModelAdmin):
     fieldsets = [
         ('General Info', {
-            'fields': ['brand', 'title', 'category', 'label', 'description',
-                       'slug', 'image'],
+            'fields': ['brand', 'title', 'product_type', 'label',
+                       'description', 'slug', 'image'],
         }
          ),
         ('FINANCIAL INFOS', {
@@ -34,26 +31,28 @@ class RobotAdmin(admin.ModelAdmin):
         }
          ),
         ('DATASHEET', {
-            'fields': ['controller', 'working_range_image', 'number_of_axes', 'payload', 'reach',
-                       'repeatability', 'picking_cycle', 'mounting', 'weight', 'axis'],
+            'fields': ['controller', 'working_range_image', 'number_of_axes',
+                       'payload', 'reach',
+                       'repeatability', 'picking_cycle', 'mounting', 'weight',
+                       ],
             'classes': ('collapse',)
         }
          ),
     ]
     list_display = ['brand',
                     'title',
-                    'category',
+                    'product_type',
                     'performance_rating',
                     ]
     list_display_links = [
         'brand',
         'title',
-        'category',
+        'product_type',
         'performance_rating',
     ]
     list_filter = ['brand',
                    'title',
-                   'category', ]
+                   'product_type', ]
 
     search_fields = [
         'title',
@@ -62,20 +61,10 @@ class RobotAdmin(admin.ModelAdmin):
     actions = [make_refund_accepted]
 
 
-admin.site.register(Robot, RobotAdmin)
-admin.site.register(Axis)
+admin.site.register(Product, RobotAdmin)
+admin.site.register(RobotClass)
+admin.site.register(Attribute)
+admin.site.register(AttributeGroup)
 admin.site.register(Brand)
 admin.site.register(Controller)
-"""
-admin.site.register(OrderItem)
-admin.site.register(Order, OrderAdmin)
-admin.site.register(Payment)
-admin.site.register(Coupon)
-admin.site.register(Refund)
-admin.site.register(Address, AddressAdmin)
-admin.site.register(UserProfile)
 
-'axis1_speed', 'axis1_movement', 'axis2_speed', 'axis2_movement',
-                       'axis3_speed', 'axis3_movement', 'axis4_speed', 'axis4_movement', 'axis5_speed', 'axis5_movement',
-                       'axis6_speed','axis6_movement'
-"""

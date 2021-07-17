@@ -6,15 +6,15 @@ from django.conf import settings
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, View
 
-from core.robot.models import Robot
+from core.products.models import Product
 
-from core.robot.utils import findrobot_query as frq
+from core.products.utils import findrobot_query as frq
 
 
 def get_datasheet(request, *args, **kwargs):
-    robot = request.GET.get("robot")
+    robot = request.GET.get("products")
     context = {
-        "robot": Robot.objects.get(slug=robot)
+        "products": Product.objects.get(slug=robot)
     }
     return render(request, "partials/datasheet-table-single.html", context)
 
@@ -23,15 +23,15 @@ def get_datasheets(request, *args, **kwargs):
     robot_1 = request.GET.get("robot_1")
     robot_2 = request.GET.get("robot_2")
     context = {
-        "robot_1": Robot.objects.get(slug=robot_1),
-        "robot_2": Robot.objects.get(slug=robot_2),
+        "robot_1": Product.objects.get(slug=robot_1),
+        "robot_2": Product.objects.get(slug=robot_2),
     }
     return render(request, "partials/datasheet-table-double.html", context)
 
 
 class RobotCompareView(View):
     def get(self, *args, **kwargs):
-        return render(self.request, "robot-compare.html")
+        return render(self.request, "products-compare.html")
 
     def post(self, *args, **kwargs):
         pass
@@ -58,7 +58,7 @@ def create_ref_code():
 
 def products(request):
     context = {
-        'items': Robot.objects.all()
+        'items': Product.objects.all()
     }
     return render(request, "products.html", context)
 
@@ -72,11 +72,11 @@ def is_valid_form(values):
 
 
 class HomeView(ListView):
-    model = Robot
+    model = Product
     paginate_by = 10
     template_name = "home.html"
 
 
 class ItemDetailView(DetailView):
-    model = Robot
-    template_name = "robot.html"
+    model = Product
+    template_name = "products.html"

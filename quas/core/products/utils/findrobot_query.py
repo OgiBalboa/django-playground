@@ -1,5 +1,5 @@
-from core.robot.models import Robot, Brand
-from core.robot.utils import global_parameters
+from core.products.models import Product, Brand
+from core.products.utils import global_parameters
 from django.http import HttpResponse
 import json
 from django.db.models import Q
@@ -31,7 +31,7 @@ class FindRobot:
     def __get__(self):
         return self.result
 def Query(request, args, kwargs):
-    robots = Robot.objects.filter(*args,**kwargs)
+    robots = Product.objects.filter(*args, **kwargs)
     #robots = Robot.objects.filter(Q(application__contains = "AS" ))
     if robots :
         values = robots.values()
@@ -45,5 +45,5 @@ def Query(request, args, kwargs):
         response = json.dumps(list(values))
         return HttpResponse(response, content_type="application/json")
     else:
-        #messages.warning(request, "No robot found")
+        #messages.warning(request, "No products found")
         return HttpResponse("ROBOT DOES NOT EXIST",status=200)

@@ -1,7 +1,14 @@
 CATEGORY_CHOICES = (
     ('IR', 'Industrial Robots'),
     ('RGV', 'RGV Robots'),
-    ('CO', 'Cobots')
+    ('CO', 'Cobots'),
+    ('WM', 'Welding Machines'),
+)
+PRODUCT_TYPES = (
+    ('IR', 'Industrial Robots'),
+    ('RGV', 'RGV Robots'),
+    ('CO', 'Cobots'),
+    ('WM', 'Welding Machines'),
 )
 
 LABEL_CHOICES = (
@@ -68,7 +75,15 @@ PRIMARY_FEATURES = (
     ('PL', 'Payload'),
 
 )
-
+AXIS_NUMBER = (
+    ('1', 'J1'),
+    ('2', 'J2'),
+    ('3', 'J3'),
+    ('4', 'J4'),
+    ('5', 'J5'),
+    ('6', 'J6'),
+    ('7', 'J7'),
+)
 AXIS_MOVEMENT = (
     ('R', 'Rotation'),
     ('A', 'Arm'),
@@ -85,16 +100,22 @@ MOUNTING = (
     ('I', 'Invert Mount'),
 )
 
-DATASHEET = ["number_of_axes", "payload", "reach", "repeatability",  "mounting",
-              "axis1_speed", "axis1_movement", "axis2_speed", "axis2_movement", "axis3_speed", "axis3_movement",
-             "axis4_speed", "axis4_movement", "axis5_speed", "axis5_movement", "axis6_speed", "axis6_movement"]
+DATASHEET = ["number_of_axes", "payload", "reach", "repeatability", "mounting",
+             "axis1_speed", "axis1_movement", "axis2_speed", "axis2_movement",
+             "axis3_speed", "axis3_movement",
+             "axis4_speed", "axis4_movement", "axis5_speed", "axis5_movement",
+             "axis6_speed", "axis6_movement"]
 ATTRIBUTE_GROUPS = {
-    "Information": ["brand", "title", "description", "performance_rating", "customer_rating", "number_of_axes"],
+    "Information": ["brand", "title", "description", "performance_rating",
+                    "customer_rating", "number_of_axes"],
     "Application": ["mounting", "application"],
-    "Psychical": ["payload", "reach", "repeatability", "weight", "picking_cycle"],
+    "Psychical": ["payload", "reach", "repeatability", "weight",
+                  "picking_cycle"],
     "Axis": ["axis"]
-} # eğer parametre "_" ile başlıyorsa farklı bir model demektir!
-parameter_groups = [MOUNTING,AXIS_MOVEMENT,PRIMARY_FEATURES, ROBOT_APPLICATIONS, CATEGORY_CHOICES, LABEL_CHOICES]
+}  # eğer parametre "_" ile başlıyorsa farklı bir model demektir!
+parameter_groups = [MOUNTING, AXIS_MOVEMENT, PRIMARY_FEATURES,
+                    ROBOT_APPLICATIONS, CATEGORY_CHOICES, LABEL_CHOICES]
+
 
 def match_parameter_with_short_name(parameter_name):
     for parameter_group in parameter_groups:
