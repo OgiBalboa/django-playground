@@ -1,95 +1,93 @@
 from django.db import models
 from core.models import BaseModel
 from django.shortcuts import reverse
+from django.utils.module_loading import import_string
 from core.products.utils import global_parameters
 from multiselectfield import MultiSelectField
-
-CATEGORY_CHOICES = global_parameters.CATEGORY_CHOICES
-LABEL_CHOICES = global_parameters.LABEL_CHOICES
-ROBOT_APPLICATIONS = global_parameters.ROBOT_APPLICATIONS
-PRODUCT_TYPES = global_parameters.PRODUCT_TYPES
-AXIS_MOVEMENT = global_parameters.AXIS_MOVEMENT
-AXIS_NUMBER = global_parameters.AXIS_NUMBER
-MOUNTING = global_parameters.MOUNTING
-DATASHEET = global_parameters.DATASHEET
+from core.products.utils.global_parameters import (
+    LABEL_CHOICES, PRODUCT_TYPES, DATA_TYPES, IMAGE_TYPES)
 
 
-# TODO: convert titles to name
+class Application(BaseModel):
+
+    def __str__(self):
+        return self.name
 
 
 class AttributeGroup(BaseModel):
-    slug = models.CharField(max_length=250)
-    name = models.CharField(max_length=350, null=True, blank=True)
 
     def __str__(self):
         return self.name
 
+
+class AttributeConf(BaseModel):
+    description = models.CharField(max_length=500, blank=True,
+                                   null=True)
+    is_direct_proportion = models.BooleanField()
+    coefficient_mapping = models.JSONField(default=dict, null=True, blank=True)
+    attribute_groups = models.ManyToManyField('AttributeGroup')
+    product_type = models.CharField(choices=PRODUCT_TYPES, max_length=250,
+                                    blank=True, null=True)
+    data_type = models.CharField(choices=DATA_TYPES, max_length=50)
+
+    def __str__(self):
+        return self.name
 
 class Attribute(BaseModel):
-    slug = models.CharField(max_length=250)
-    name = models.CharField(max_length=350, null=True, blank=True)
-    attribute_group = models.ManyToManyField('AttributeGroup')  # groupSS
-    product_types = MultiSelectField(choices=PRODUCT_TYPES, max_length=250,
-                                     blank=True, null=True)
+    product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
+    value = models.JSONField(default=dict)
+    conf = models.ForeignKey('products.AttributeConf', on_delete=models.CASCADE)
+    value_calculator = models.ForeignKey('calculators.ValueCalculator',
+                                         null=True, on_delete=models.CASCADE,
+                                         blank=True)
+
+    def get_value(self):
+        if self.value_calculator:
+            return self.value_calculator.calculate()
+        if self.conf.data_type not in ['dict', 'list']:
+            return self.value.get('default_value')
+        return self.value
+
+    def __str__(self):
+        return "{} - {}".format(self.product.name,self.name)
+
+
+# Add customer rating table, image table
+class Product(BaseModel):
+    main_slug = models.CharField(max_length=200)
+    brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
+
+    product_type = models.CharField(choices=PRODUCT_TYPES, max_length=10)
+    label = models.CharField(choices=LABEL_CHOICES, max_length=1)
+    slogan = models.CharField(max_length=100, null=True, blank=True)
+    description = models.TextField()
+
+    price = models.DecimalField(max_digits=9, decimal_places=2,
+                                null=True, blank=True)
 
     def __str__(self):
         return self.name
-
-
-class Product(BaseModel):
-    # -------------------GENERAL INFOS---------------------------
-    attributes = models.JSONField(default=dict)
-    attributes_detailed = models.JSONField(default=dict)
-    brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
-    title = models.CharField(max_length=100)
-    application = MultiSelectField(choices=ROBOT_APPLICATIONS, max_length=250,
-                                   blank=True, null=True)
-    product_type = models.CharField(choices=PRODUCT_TYPES, max_length=10)
-    label = models.CharField(choices=LABEL_CHOICES, max_length=1)
-    description = models.TextField()
-    slug = models.SlugField()
-    image = models.ImageField()
-    slogan = models.CharField(max_length=100, null=True, blank=True)
-    # --------------------RATINGS--------------------------
-    performance_rating = models.IntegerField(default=1)
-    customer_rating = models.IntegerField(default=1)
-    # speed = models.IntegerField(default =1)
-    # power = models.IntegerField(default =1)
-    # accuracy = models.IntegerField(default =1)
-
-    # -------------------FINANCIAL INFOS-------------------------
-    price = models.FloatField()
-    discount_price = models.FloatField(blank=True, null=True)
-    # ----------------------DATASHEET----------------------------
-    working_range_image = models.ImageField(
-        upload_to='robots/working_range_images/')
-
-    number_of_axes = models.IntegerField(default=6)
-    payload = models.IntegerField(default=1)  # kg
-    reach = models.FloatField(default=1)  # metre
-    repeatability = models.FloatField(default=1)  # mm
-    picking_cycle = models.FloatField(
-        default=1)  # sec 300x25x25 with 1kg payload
-    mounting = MultiSelectField(choices=MOUNTING, max_length=30)
-    weight = models.IntegerField(default=1)  # kg
-
-    controller = models.ForeignKey('Controller', on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.title
 
     def get_brand_url(self):
         return reverse("core:brand", kwargs={
             'slug': self.brand
         })
 
+    def get_sales_url(self):
+        return
+
     def get_absolute_url(self):
         return reverse("core:product", kwargs={
             'slug': self.slug
         })
 
+    def get_attributes(self):
+        return Attribute.objects.filter(product_id=self.pk)
+
     def get_attributes_by_attribute_group(self, attribute_group):
-        return
+        # duzelt
+        return Attribute.objects.filter(product_id=self.pk,
+                                        conf__attrubte_groups=attribute_group)
 
     def get_grouped_attributes(self):
         return
@@ -133,32 +131,21 @@ class Product(BaseModel):
 
 
 class Brand(BaseModel):
-    title = models.CharField(max_length=100)
-    '''
+    """
     Brand info, name, country, date, point, etc...
-    '''
-
-    def __str__(self):
-        return self.title
-
-
-class Controller(BaseModel):
-    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
-    title = models.CharField(max_length=100)
-
-    # ----------------DATASHEET------------------
-
-    def __str__(self):
-        return self.title
-
-
-class RobotClass(BaseModel):
     """
-    Classify robots in order to rate them by their production purpose
-    """
-    title = models.CharField(max_length=50)
-    attributes = models.JSONField()
-    attributes_detailed = models.JSONField()
+    # country =
+    year_of_foundation = models.DateField()
 
     def __str__(self):
-        return self.title
+        return self.name
+
+
+class ProductImage(BaseModel):
+    product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='robots/images')
+    type = models.CharField(choices=IMAGE_TYPES, max_length=250)
+    is_active = models.BooleanField()
+
+    def __str__(self):
+        return "{} - {}_{}".format(self.product.name, self.type, self.slug)

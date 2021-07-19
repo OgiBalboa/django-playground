@@ -25,6 +25,8 @@ INSTALLED_APPS = [
     'django_countries',
     'core.products',
     'core.users',
+    'core.cms',
+    'core.calculators',
 ]
 
 MIDDLEWARE = [

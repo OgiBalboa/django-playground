@@ -19,11 +19,33 @@ LABEL_CHOICES = (
     ('W', 'warning'),
 )
 
-ADDRESS_CHOICES = (
-    ('B', 'Billing'),
-    ('S', 'Shipping'),
+UNIT_TYPES = (
+    ('kg', 'kilogrammes'),
+    ('g', 'grammes'),
+    ('m', 'meters'),
+    ('mm', 'millimeters'),
+    ('s', 'seconds'),
+    ('ms', 'milliseconds'),
+    ('q', 'quantity'),
+    ('kV', 'kilo-voltage'),
+    ('kVA', 'kilo-volt-amper'),
+    ('kW', 'kilowatts'),
+    ('V', 'voltage'),
+    ('C', 'Celsius'),
+    ('dB', 'decibels'),
+    ('null', 'null'),
 )
-
+DATA_TYPES = (
+    ('int', 'Integer'),
+    ('dec', 'Decimal'),
+    ('str', 'String'),
+    ('list', 'List'),
+    ('dict', 'Dict'),
+)
+IMAGE_TYPES = (
+    ('default', 'Default'),
+    ('working_range', 'Working Range'),
+)
 ROBOT_APPLICATIONS = (
     ('AS', 'Assembly'),
     ('AW', 'Arc Welding'),
@@ -112,7 +134,7 @@ ATTRIBUTE_GROUPS = {
     "Psychical": ["payload", "reach", "repeatability", "weight",
                   "picking_cycle"],
     "Axis": ["axis"]
-}  # eğer parametre "_" ile başlıyorsa farklı bir model demektir!
+}
 parameter_groups = [MOUNTING, AXIS_MOVEMENT, PRIMARY_FEATURES,
                     ROBOT_APPLICATIONS, CATEGORY_CHOICES, LABEL_CHOICES]
 
@@ -124,3 +146,15 @@ def match_parameter_with_short_name(parameter_name):
                 print(parameter[0])
                 return parameter[0]
     return "NO MATCH"
+
+
+if __name__ == "__main__":
+    import json
+
+    d = {"applications": []}
+    for p in ROBOT_APPLICATIONS:
+        d['applications'].append({
+            "name": p[1],
+            "slug": p[1].lower().replace(" ", "_")
+        })
+    json.dump(d, open("applications.json", "w"))
