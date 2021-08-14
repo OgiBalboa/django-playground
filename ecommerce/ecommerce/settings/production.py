@@ -21,7 +21,7 @@ DATABASES = {
         'PORT': ''
     }
 }
-"""
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -30,6 +30,13 @@ DATABASES = {
         'PASSWORD': 'gfb.1907',
         'HOST': 'localhost',
         'PORT': '',
+    }
+}
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 STRIPE_PUBLIC_KEY = config('STRIPE_LIVE_PUBLIC_KEY')
