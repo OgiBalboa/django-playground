@@ -1,27 +1,27 @@
 {% extends "base.html" %}
 {% load humanize %}
 {% load cart_template_tags %}
-{% block content %}
 {% load static %}
 <!-- DEFINE COLORS BY RATINGS -->
 
+{% block content %}
 
+<main class="mt-5 pt-4">
+    <div id="main_container" class="container dark-grey-text mt-5">
 
-  <main class="mt-5 pt-4">
-    <div id = "main_container" class="container dark-grey-text mt-5">
-
-      <div class="row wow fadeIn">
-        <!-- Left (Brand + title) -->
-        <div class="col-md-6 mb-4">
-          <a href = "{{ object.get_brand_url }}">
-            <h1 align="center"> {{ object.brand }} </h1>
-          </a>
-          <span> <h1 align="center">{{ object.title }} </h1></span>
-          </div>
-        <!-- Right (Ratings) -->
-        <div class="col-md-6 mb-4">
-          <div class="col-md-6 mb-4" >
-            <script>
+        <div class="row wow fadeIn">
+            <!-- Left (Brand + title) -->
+            <div class="col-md-6 mb-4">
+                <a href="{{ object.get_brand_url }}">
+                    <h1 align="center"> {{ object.brand }} </h1>
+                </a>
+                <span> <h1 align="center"><b>{{ object.name }}</b></h1></span>
+                <span> <h5 align="center"><i>{{ object.slogan }}</i> </h5></span>
+            </div>
+            <!-- Right (Ratings) -->
+            <div class="col-md-6 mb-4">
+                <div class="col-md-6 mb-4">
+                    <script>
           {% if object.performance_rating > 85 %}
              {% setvar "#32951d" as p_color %}
           {% elif object.performance_rating > 70 %}
@@ -31,15 +31,18 @@
           {% else %}
             {% setvar "darkred" as p_color %}
           {% endif %}
-          </script>
-            <div>
-              <span class="badge blue mr-1" style = "margin-bottom:0.25em;font-size: 100%;">Performance Rating: </span>
-              <span style="font-size: 150%;align:center;color:{{p_color}};">&nbsp; &nbsp; &nbsp; <b> {{ object.performance_rating }}</b> </span>
-              </div>
 
 
-        <div class="progress md-progress">
-          <script>
+                    </script>
+                    <div>
+                        <span class="badge blue mr-1"
+                              style="margin-bottom:0.25em;font-size: 100%;">Performance Rating: </span>
+                        <span style="font-size: 150%;align:center;color:{{p_color}};">&nbsp; &nbsp; &nbsp; <b> {{ object.performance_rating }}</b> </span>
+                    </div>
+
+
+                    <div class="progress md-progress">
+                        <script>
           {% if object.customer_rating > 85 %}
              {% setvar "#32951d" as c_color %}
           {% elif object.customer_rating > 70 %}
@@ -49,153 +52,189 @@
           {% else %}
             {% setvar "darkred" as c_color %}
           {% endif %}
-        </script>
-            <div class="progress-bar" role="progressbar" style="background-color: {{p_color}}; width: {{ object.performance_rating }}%"
-                 aria-valuenow="{{ object.performance_rating }}" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
-        </div>
-
-          <div class="col-md-6 mb-4">
-          <span class="badge blue mr-1" style = "font-size: 100%;margin-bottom:0.25em">Customer Rating &nbsp; &nbsp; : </span>
-            <span style="font-size: 150%;align:center;color:{{c_color}};">&nbsp; &nbsp; &nbsp; &nbsp;<b>{{ object.customer_rating }}</b></span>
-        <div class="progress md-progress">
-
-            <div class="progress-bar" role="progressbar" style="background-color: {{c_color}}; width: {{ object.customer_rating }}%"
-                 aria-valuenow="{{ object.performance_rating }}" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
-        </div>
-        </div>
-        </div>
 
 
-    <!-- PRODUCT INFO -->
+                        </script>
+                        <div class="progress-bar" role="progressbar"
+                             style="background-color: {{p_color}}; width: {{ object.performance_rating }}%"
+                             aria-valuenow="{{ object.performance_rating }}"
+                             aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
 
-      <!--Grid row-->
-      <div class="row wow fadeIn">
+                <div class="col-md-6 mb-4">
+                    <span class="badge blue mr-1"
+                          style="font-size: 100%;margin-bottom:0.25em">Customer Rating &nbsp; &nbsp; : </span>
+                    <span style="font-size: 150%;align:center;color:{{c_color}};">&nbsp; &nbsp; &nbsp; &nbsp;<b>{{ object.customer_rating }}</b></span>
+                    <div class="progress md-progress">
 
-        <!--Grid column-->
-        <div class="col-md-6 mb-4 text-center">
-
-          <img src="{{ object.image.url }}" class="animated fadeInLeft" alt="">
-
-        </div>
-        <!--Grid column img-fluid-->
-
-        <!--Grid column-->
-        <div class="col-md-6 mb-4">
-
-          <!--Content-->
-          <div class="p-4">
-
-            <div class="mb-3">
-              <a href="">
-                <span class="badge purple mr-1">{{ object.get_category_display }}</span>
-              </a>
+                        <div class="progress-bar" role="progressbar"
+                             style="background-color: {{c_color}}; width: {{ object.customer_rating }}%"
+                             aria-valuenow="{{ object.performance_rating }}"
+                             aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
             </div>
+        </div>
 
-            <p class="lead">
-              {% if object.discount_price %}
-              <span class="mr-1">
+
+        <!-- PRODUCT INFO -->
+
+        <!--Grid row-->
+        <div class="row wow fadeIn">
+
+            <!--Grid column-->
+            <div class="col-md-6 mb-4 text-center">
+
+                <img src="{{ object.productimage_set.first.image.url }}" class="animated fadeInLeft"
+                     alt="">
+
+            </div>
+            <!--Grid column img-fluid-->
+
+            <!--Grid column-->
+            <div class="col-md-6 mb-4">
+
+                <!--Content-->
+                <div class="p-4">
+
+                    <div class="mb-3">
+                        <a href="">
+                            <span class="badge purple mr-1">{{ object.get_category_display }}</span>
+                        </a>
+                    </div>
+
+                    <p class="lead">
+                        {% if object.discount_price %}
+                        <span class="mr-1">
                 <del>${{ object.price|intcomma }}</del>
               </span>
-              <span>${{ object.discount_price|intcomma }}</span>
-              {% else %}
-              <span>${{ object.price |intcomma }}</span>
-              {% endif %}
-            </p>
+                        <span>${{ object.discount_price|intcomma }}</span>
+                        {% else %}
+                        <span>${{ object.price |intcomma }}</span>
+                        {% endif %}
+                    </p>
 
-            <p class="lead font-weight-bold">Description</p>
+                    <p class="lead font-weight-bold">Description</p>
 
-            <p>{{ object.description }}</p>
+                    <p>{{ object.description }}</p>
 
-            {% comment %} <form class="d-flex justify-content-left">
-              <!-- Default input -->
-              <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px">
-              <button class="btn btn-primary btn-md my-0 p" type="submit">
-                Add to cart
-                <i class="fas fa-shopping-cart ml-1"></i>
-              </button>
+                    {% comment %}
+                    <form class="d-flex justify-content-left">
+                        <!-- Default input -->
+                        <input type="number" value="1" aria-label="Search"
+                               class="form-control" style="width: 100px">
+                        <button class="btn btn-primary btn-md my-0 p"
+                                type="submit">
+                            Add to cart
+                            <i class="fas fa-shopping-cart ml-1"></i>
+                        </button>
 
-            </form> 
-            <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary btn-md my-0 p">
-              Add to cart
-              <i class="fas fa-shopping-cart ml-1"></i>
-            </a>
-            <a href="{{ object.get_remove_from_cart_url }}" class="btn btn-danger btn-md my-0 p">
-              Remove from cart
-            </a>
-          {% endcomment %}
-          </div>
-          <!--Content-->
+                    </form>
+                    <a href="{{ object.get_add_to_cart_url }}"
+                       class="btn btn-primary btn-md my-0 p">
+                        Add to cart
+                        <i class="fas fa-shopping-cart ml-1"></i>
+                    </a>
+                    <a href="{{ object.get_remove_from_cart_url }}"
+                       class="btn btn-danger btn-md my-0 p">
+                        Remove from cart
+                    </a>
+                    {% endcomment %}
+                </div>
+                <!--Content-->
 
-        </div>
-        <!--Grid column-->
-
-      </div>
-      <!--Grid row-->
-
-      <hr>
-
-      <!--Grid row-->
-      <div class="row d-flex justify-content-center wow fadeIn">
-
-        <!--Grid column-->
-        <div class="col-md-6 text-center">
-
-          <h4 class="my-4 h4">Additional information</h4>
-
-          <p>{{object.description}}</p>
+            </div>
+            <!--Grid column-->
 
         </div>
-        <!--Grid column-->
+        <!--Grid row-->
 
-      </div>
-      <!--Grid row-->
+        <hr>
 
-      <!--Grid row-->
-      <div class="row wow fadeIn">
+        <!--Grid row-->
+        <div class="row d-flex justify-content-center wow fadeIn">
 
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-12 mb-4">
+            <!--Grid column-->
+            <div class="col-md-6 text-center">
 
-          <img src="{{ item.image.url }}" alt="">
+                <h4 class="my-4 h4">Additional information</h4>
 
-        </div>
-        <!--Grid column-->
+                <p>{{object.description}}</p>
 
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-6 mb-4">
-
-          <img src="{{ item.image.url }}" class="img-fluid" alt="">
+            </div>
+            <!--Grid column-->
 
         </div>
-        <!--Grid column-->
+        <!--Grid row-->
 
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-6 mb-4">
+        <!--Grid row-->
+        <div class="row wow fadeIn">
 
-          <img src="{{ item.image.url }}" class="img-fluid" alt="">
+            <!--Grid column-->
+            <div class="col-lg-4 col-md-12 mb-4">
+
+                <img src="{{ item.productimage_set.first.image.url }}" alt="">
+
+            </div>
+            <!--Grid column-->
+
+            <!--Grid column-->
+            <div class="col-lg-4 col-md-6 mb-4">
+
+                <img src="{{ item.productimage_set.first.image.url }}" class="img-fluid" alt="">
+
+            </div>
+            <!--Grid column-->
+
+            <!--Grid column-->
+            <div class="col-lg-4 col-md-6 mb-4">
+
+                <img src="{{ item.productimage_set.first.image.url }}" class="img-fluid" alt="">
+
+            </div>
+            <!--Grid column-->
 
         </div>
-        <!--Grid column-->
-
-      </div>
-      <!--Grid row-->
+        <!--Grid row-->
+        <div class="row">
+            <div class="col mx-auto text-center mt-3">
+                <button class="btn btn-primary btn-block" type="button"
+                        data-toggle="collapse"
+                        role="button"
+                        data-target="#datasheet_div"
+                        aria-expanded="false"
+                        aria-controls="datasheet_div">
+                    DATASHEET (Show/Hide)
+                </button>
+                <div class="row collapse mt-3" id="datasheet_div">
+                    <div class="col ml-1 mr-1 card text-center">
+                        <table class="table table-bordered mt-3"
+                               style="width:100%">
+                            <tbody>
+                            <tr>
+                                <td><b>Attribute</b></td>
+                                <td><b>Value </b></td>
+                            </tr>
+                            {% for attribute in object.attribute_set.all %}
+                                <tr>
+                                    <td><b> {{attribute.name}} </b></td>
+                                    <td>{% for result in attribute.get_value %}
+                                        {{result}}
+                                    {% endfor %} </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
-    <script src="{% static 'js/jquery-3.4.1.min.js' %}" type="text/javascript"></script>
-    <script>
-        $.ajax({
-            type: "GET",
-            url: "/get_datasheet",
-            //data: {'csrfmiddlewaretoken': csrftoken},
-            data: {"robot":"{{object.slug}}"},
-            success : function(data) {
-            console.log(data);
-                $("#main_container").append(data);
-            }
-        })
-    </script>
-  </main>
 
+
+</main>
 {% endblock content %}
+
+

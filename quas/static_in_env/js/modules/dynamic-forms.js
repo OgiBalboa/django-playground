@@ -254,7 +254,8 @@ function remove_field(x){
 function pull_form() {
     let data = {};
     for (let key in FIELDS) {
-        data[key] = [FIELDS[key].hint,FIELDS[key].get_value()];
+        data[key] = {"hint": FIELDS[key].hint,
+                     "values": FIELDS[key].get_value()};
     }
     return data;
 }

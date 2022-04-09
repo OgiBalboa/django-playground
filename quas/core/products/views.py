@@ -1,14 +1,27 @@
 import random
 import string
 import json
-import stripe
-from django.conf import settings
+
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, View
 
-from core.products.models import Product
+from rest_framework.views import APIView
+from rest_framework import viewsets
+from core.products.models import Product, Attribute
+from core.products.serializers import ProductSerializer, AttributeSerializer
 
 from core.products.utils import findrobot_query as frq
+
+
+class ProductView(viewsets.ModelViewSet):
+    queryset = Product.objects.prefetch_related('productimage_set',
+                                                'attribute_set')
+    serializer_class = ProductSerializer
+
+
+class AttributeView(viewsets.ModelViewSet):
+    queryset = Attribute.objects.select_related('conf')
+    serializer_class = AttributeSerializer
 
 
 def get_datasheet(request, *args, **kwargs):
@@ -29,7 +42,7 @@ def get_datasheets(request, *args, **kwargs):
     return render(request, "partials/datasheet-table-double.html", context)
 
 
-class RobotCompareView(View):
+class RobotCompareView(APIView):
     def get(self, *args, **kwargs):
         return render(self.request, "products-compare.html")
 
@@ -44,12 +57,6 @@ class FindRobotView(View):
         else:
             data = json.loads(self.request.GET.get("parameters"))
             return frq.FindRobot(self.request, data).__get__()
-
-    def post(self, *args, **kwargs):
-        return HttpResponse(self.request, "POST", status=200)
-
-
-stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 def create_ref_code():
@@ -77,6 +84,13 @@ class HomeView(ListView):
     template_name = "home.html"
 
 
-class ItemDetailView(DetailView):
+class ProductDetailView(DetailView):
     model = Product
     template_name = "products.html"
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.is_hidden is False:
+            context = self.get_context_data(object=self.object)
+            return self.render_to_response(context)
+        return render(request, "404.html", "")

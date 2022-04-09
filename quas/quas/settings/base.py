@@ -15,14 +15,14 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.sites',
     'django_extensions',
+    'django_countries',
 
     'rest_framework',
-
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'crispy_forms',
-    'django_countries',
+
     'core.products',
     'core.users',
     'core.cms',

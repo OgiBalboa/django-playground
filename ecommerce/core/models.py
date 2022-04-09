@@ -184,3 +184,63 @@ def userprofile_receiver(sender, instance, created, *args, **kwargs):
 
 
 post_save.connect(userprofile_receiver, sender=settings.AUTH_USER_MODEL)
+
+
+class Author(models.Model):
+    name = models.CharField(max_length=100)
+
+
+class Book(models.Model):
+    title = models.CharField(max_length=100)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+
+
+def query_debugger(func):
+    from django.db import connection, reset_queries
+    import time
+    import functools
+
+    @functools.wraps(func)
+    def inner_func(*args, **kwargs):
+        reset_queries()
+
+        start_queries = len(connection.queries)
+
+        start = time.perf_counter()
+        result = func(*args, **kwargs)
+        end = time.perf_counter()
+
+        end_queries = len(connection.queries)
+
+        print(f"Function : {func.__name__}")
+        print(f"Number of Queries : {end_queries - start_queries}")
+        print(f"Finished in : {(end - start):.2f}s")
+        return result
+
+    return inner_func
+
+@query_debugger
+def function_1():
+    qs = Book.objects.all().values("title", "author__name")
+    print(qs.query)
+    for book in qs:
+        print('"{}". {}'.format(book.get("title"), book.get("author__name")))
+
+@query_debugger
+def function_2():
+    qs2 = Author.objects.prefetch_related("book_set").all()
+    print(qs2.query)
+
+    for author in qs2:
+        books = ['"{}"'.format(book.title) for book in author.book_set.all()]
+        print('{}: {}'.format(author.name, ", ".join(books)))
+
+@query_debugger
+def function_3():
+    from django.db.models import Count
+    qs3 = Author.objects.all().annotate(book_count=Count("book")).values("name",
+                                                                         "book_count").order_by("-book_count")
+    print(qs3.query)
+
+    for data in qs3:
+        print("{}: {}".format(data.get("name"), data.get("book_count", 0)))

@@ -18,13 +18,14 @@ class Command(BaseCommand):
                                 "\n".join(options)
                             ))
         parser.add_argument('--path', type=str)
+        parser.add_argument('--force', type=bool)
 
     def handle(self, *args, **kwargs):
         self.path = kwargs.get("path")
         self._create_attribute_groups()
         self._create_attribute_confs()
         self._create_brands()
-        self._create_products()
+        self._create_products(force_create=kwargs.get('force'))
 
     def _create_attribute_groups(self):
         attribute_groups = ['physical', 'commercial', 'efficiency']
@@ -38,6 +39,8 @@ class Command(BaseCommand):
             robot_attributes = json.load(attr_file)['attributes']
             # TODO: base service to create st
             for attr in robot_attributes:
+                if AttributeConf.objects.filter(slug=attr.get('slug')).exists():
+                    continue
                 attr_groups = attr.pop("attribute_groups")
                 """
                 new_attr_groups = [AttributeGroup.objects.get(slug=attr_group).id
@@ -54,11 +57,17 @@ class Command(BaseCommand):
                                            year_of_foundation=datetime.date(
                                                1970, 10, 7))
 
-    def _create_products(self):
+    def _create_products(self, force_create=False):
         fp = os.path.join(self.path, "products.json")
         with open(fp, "r") as attr_file:
             products = json.load(attr_file)['products']
             for product in products:
+                qs = Product.objects.filter(slug=product.get('slug'))
+                if qs:
+                    if force_create:
+                        qs.delete()
+                    else:
+                        continue
                 attributes = product.pop("attributes")
                 image = product.pop('image')
                 wr_image = product.pop('working_range_image')
